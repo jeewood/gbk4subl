@@ -2,7 +2,7 @@ import sublime, sublime_plugin
 import os
 
 def log(msg):
-    #return
+    return
     win = sublime.active_window()
     view = win.active_view()
     if msg:
@@ -18,7 +18,6 @@ def isView(id):
     return (view is not None and view.id() == id)
 
 def file_encoding(view):
-    log('file_encoding')
     try:
         if os.path.exists(view.file_name()):
             try:
@@ -69,18 +68,18 @@ class ToUtf8Command(sublime_plugin.TextCommand):
                 view.set_scratch(True)
 
 class PluginEventListener(sublime_plugin.EventListener):
-    def on_load(self, view):
+    def on_load_async(self, view):
         if isView(view.id()):
             log(view.get_status('_ISGBKFILE'))
             if view.get_status('_ISGBKFILE')!='GBK' and file_encoding(view)=='GBK':
                 view.run_command('to_utf8')
 
-    def on_post_save(self, view):
+    def on_post_save_async(self, view):
         if isView(view.id()):
             if view.get_status('_ISGBKFILE')=='GBK':
                 view.run_command('from_utf8')
 
-    def on_pre_save(self, view):
+    def on_pre_save_async(self, view):
         if isView(view.id()):
             file_encoding(view)
 
@@ -89,15 +88,15 @@ class PluginEventListener(sublime_plugin.EventListener):
             if view.get_status('_ISGBKFILE')=='GBK':
                 view.run_command('from_utf8')
 
-    def on_activated(self, view):
+    def on_activated_async(self, view):
         if isView(view.id()):
-            if view.get_status('_ISGBKFILE')=='' or view.encoding() != 'GBK':
+            if view.get_status('_ISGBKFILE')=='' or view.encoding() != 'UTF-8':
                 if file_encoding(view)=='GBK':
                     log('on_activated than to UTF-8')
                     view.run_command('to_utf8')
-                    view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
+                    #view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
 
-    def on_modified(self, view):
+    def on_modified_async(self, view):
         if isView(view.id()):
             if view.file_name() and os.path.exists(view.file_name()):
                 log('on_modified:  ' + view.get_status(str(view.file_name()) + '_GBK_STATUS'))
