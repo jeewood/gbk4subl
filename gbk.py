@@ -2,12 +2,22 @@ import sublime, sublime_plugin
 import os
 
 def log(msg):
-    sublime.message_dialog(str(msg))
-    
-def status(msg):
-    sublime.status_message(str(msg))
+    win = sublime.active_window()
+    view = win.active_view()
+    if msg:
+        print(str(msg))
+    print(win)
+    print(view,view.file_name())
+    pass
+
+def isView(id):
+    if not id: return false
+    window = sublime.active_window()
+    view = window.active_view() if window != None else None
+    return (view is not None and view.id() == id)
 
 def file_encoding(view):
+    log('file_encoding')
     try:
         if os.path.exists(view.file_name()):
             try:
@@ -29,54 +39,76 @@ def file_encoding(view):
 
 class FromUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
-        if self.view.get_status('_ISGBKFILE') == 'GBK':
-            reg_all = sublime.Region(0, self.view.size())
-            text = self.view.substr(reg_all)
+        view = self.view
+        if isView(view.id()):
+            reg_all = sublime.Region(0, view.size())
+            text = view.substr(reg_all)
             text = text.replace('\n','\r\n')
             text = text.encode('gbk')
-            fp = open(self.view.file_name(),'wb')
-            fp.write(text)
-            fp.close()
-            self.view.set_status('_GBK_STATUS','<A>')
-            self.view.set_scratch(True)
+            if view.file_name() and os.path.exists(view.file_name()):
+                fp = open(view.file_name(),'wb')
+                fp.write(text)
+                fp.close()
+                #view.erase_status(str(view.file_name()) + '_GBK_STATUS')
+                #view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
+                view.set_scratch(True)
 
 class ToUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
-        if file_encoding(self.view)=='GBK':
-            fp = open(self.view.file_name(),'rb')
-            buf = fp.read()
-            fp.close()
-            text = buf.decode('gbk')
-            text = text.replace('\r\n','\n').replace('\r','\n')
-            reg_all = sublime.Region(0, self.view.size())
-            self.view.set_status('_GBK_STATUS','<A>')
-            self.view.replace(edit,reg_all,text)
-            self.view.set_scratch(True)
+        view = self.view
+        if isView(view.id()):
+            if view.file_name() and os.path.exists(view.file_name()):
+                fp = open(view.file_name(),'rb')
+                buf = fp.read()
+                fp.close()
+                text = buf.decode('gbk')
+                text = text.replace('\r\n','\n').replace('\r','\n')
+                reg_all = sublime.Region(0, view.size())
+                view.erase_status(str(view.file_name()) + '_GBK_STATUS')
+                view.set_status(str(view.file_name()) + '_GBK_STATUS','<L>')
+                view.replace(edit,reg_all,text)
+                view.set_scratch(True)
 
 class PluginEventListener(sublime_plugin.EventListener):
     def on_load(self, view):
-        if file_encoding(view)=='GBK':
-            view.run_command('to_utf8')
+        if isView(view.id()):
+            log(view.get_status('_ISGBKFILE'))
+            if view.get_status('_ISGBKFILE')!='GBK' and file_encoding(view)=='GBK':
+                view.run_command('to_utf8')
 
     def on_post_save(self, view):
-        if view.get_status('_ISGBKFILE')=='GBK':
-            view.run_command('from_utf8')
+        if isView(view.id()):
+            if view.get_status('_ISGBKFILE')=='GBK':
+                view.run_command('from_utf8')
 
     def on_pre_save(self, view):
-        file_encoding(view)
-
-    def on_close(self, view):
-        if view.get_status('_ISGBKFILE')=='GBK':
-            view.run_command('from_utf8')
-
-    def on_activated(self, view):
-        if view.get_status('_ISGBKFILE')=='':
-            view.set_status('_GBK_STATUS','<A>')
+        if isView(view.id()):
             file_encoding(view)
 
-    def on_modified(self, view):
-        if view.get_status('_GBK_STATUS')=='<A>':
-            view.erase_status('_GBK_STATUS')
-        else:
-            view.set_scratch(False)
+    def on_close(self, view):
+        if isView(view.id()):
+            if view.get_status('_ISGBKFILE')=='GBK':
+                view.run_command('from_utf8')
 
+    def on_activated(self, view):
+        if isView(view.id()):
+            window = sublime.active_window()
+            gr_number = window.num_groups()
+            current_view = window.active_view()
+
+            if view.get_status('_ISGBKFILE')=='' and file_encoding(view)=='GBK':
+                view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
+
+    def on_modified(self, view):
+        if isView(view.id()):
+            if view.file_name() and os.path.exists(view.file_name()):
+                log('on_modified:' + view.get_status(str(view.file_name()) + '_GBK_STATUS'))
+                if view.get_status(str(view.file_name()) + '_GBK_STATUS')=='<L>':
+                    view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
+                elif view.get_status(str(view.file_name()) + '_GBK_STATUS')=='<A>':
+                    view.erase_status(str(view.file_name()) + '_GBK_STATUS')
+                else:
+                    view.set_scratch(False)
+
+            if view.is_dirty():
+                view.erase_status(str(view.file_name()) + '_GBK_STATUS')
