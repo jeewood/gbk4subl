@@ -2,12 +2,13 @@ import sublime, sublime_plugin
 import os
 
 def log(msg):
+    #return
     win = sublime.active_window()
     view = win.active_view()
     if msg:
         print(str(msg))
-    print(win)
-    print(view,view.file_name())
+    #print(win)
+    #print(view,view.file_name())
     pass
 
 def isView(id):
@@ -49,8 +50,6 @@ class FromUtf8Command(sublime_plugin.TextCommand):
                 fp = open(view.file_name(),'wb')
                 fp.write(text)
                 fp.close()
-                #view.erase_status(str(view.file_name()) + '_GBK_STATUS')
-                #view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
                 view.set_scratch(True)
 
 class ToUtf8Command(sublime_plugin.TextCommand):
@@ -92,18 +91,20 @@ class PluginEventListener(sublime_plugin.EventListener):
 
     def on_activated(self, view):
         if isView(view.id()):
-            window = sublime.active_window()
-            gr_number = window.num_groups()
-            current_view = window.active_view()
-
-            if view.get_status('_ISGBKFILE')=='' and file_encoding(view)=='GBK':
-                view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
+            if view.get_status('_ISGBKFILE')=='' or view.encoding() != 'GBK':
+                if file_encoding(view)=='GBK':
+                    log('on_activated than to UTF-8')
+                    view.run_command('to_utf8')
+                    view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
 
     def on_modified(self, view):
         if isView(view.id()):
             if view.file_name() and os.path.exists(view.file_name()):
-                log('on_modified:' + view.get_status(str(view.file_name()) + '_GBK_STATUS'))
-                if view.get_status(str(view.file_name()) + '_GBK_STATUS')=='<L>':
+                log('on_modified:  ' + view.get_status(str(view.file_name()) + '_GBK_STATUS'))
+                if view.encoding()!='UTF-8' and file_encoding(view)=='GBK':
+                    log('on_modified than to UTF-8')
+                    view.run_command('to_utf8')
+                elif view.get_status(str(view.file_name()) + '_GBK_STATUS')=='<L>':
                     view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
                 elif view.get_status(str(view.file_name()) + '_GBK_STATUS')=='<A>':
                     view.erase_status(str(view.file_name()) + '_GBK_STATUS')
