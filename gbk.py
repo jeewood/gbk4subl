@@ -105,7 +105,6 @@ class PluginEventListener(sublime_plugin.EventListener):
                 if file_encoding(view)=='GBK':
                     log('on_activated than to UTF-8')
                     view.run_command('to_utf8')
-                    #view.set_status(str(view.file_name()) + '_GBK_STATUS','<A>')
 
     def on_text_command(self, view, command_name, args):
         if isView(view.id()):
