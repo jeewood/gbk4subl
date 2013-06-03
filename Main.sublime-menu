@@ -1,0 +1,19 @@
+[
+    {
+        "caption": "File",
+        "mnemonic": "F",
+        "id": "file",
+        "children":
+        [
+            {
+                "caption": "Save GBK/UTF-8 Encoding",
+                "children":
+                [
+                    { "caption": "Chinese Simplified (GBK)", "command": "from_utf8" },
+                    { "caption": "-" },
+                    { "caption": "Save as UTF-8", "command": "save_utf8" },
+                ]
+            }
+        ]
+    }
+]
