@@ -1,6 +1,10 @@
 import sublime, sublime_plugin
 import os
 
+def log(msg):
+    print(msg)
+    pass
+
 def isView(id):
     if not id: return false
     window = sublime.active_window()
@@ -73,11 +77,11 @@ class PluginEventListener(sublime_plugin.EventListener):
         if isView(view.id()) and  view.get_status('_ISGBKFILE')!='GBK' and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
 
-    def on_post_save_async(self, view):
+    def on_post_save(self, view):
         if isView(view.id()) and view.get_status('_ISGBKFILE')=='GBK':
             view.run_command('from_utf8')
 
-    def on_pre_save_async(self, view):
+    def on_pre_save(self, view):
         if isView(view.id()):
             file_encoding(view)
 
@@ -85,7 +89,7 @@ class PluginEventListener(sublime_plugin.EventListener):
         if isView(view.id()) and view.get_status('_ISGBKFILE')=='GBK':
             view.run_command('from_utf8')
 
-    def on_activated_async(self, view):
+    def on_activated(self, view):
         if isView(view.id()) and (view.get_status('_ISGBKFILE')=='' or view.encoding() != 'UTF-8') \
             and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
@@ -95,7 +99,7 @@ class PluginEventListener(sublime_plugin.EventListener):
             and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
     
-    def on_modified_async(self, view):
+    def on_modified(self, view):
         if isView(view.id()):
             if view.file_name() and os.path.exists(view.file_name()):
                 if view.encoding()!='UTF-8' and file_encoding(view)=='GBK':
