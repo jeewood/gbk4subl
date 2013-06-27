@@ -73,7 +73,7 @@ class SaveUtf8Command(sublime_plugin.TextCommand):
             view.run_command('save',{"encoding": "utf-8"})
 
 class PluginEventListener(sublime_plugin.EventListener):
-    def on_load_async(self, view):
+    def on_load(self, view):
         if isView(view.id()) and  view.get_status('_ISGBKFILE')!='GBK' and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
 
