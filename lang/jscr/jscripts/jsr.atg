@@ -1,0 +1,102 @@
+COMPILER JScr
+
+CHARACTERS
+  letter   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" .
+  digit    = "0123456789" .
+  hexdigit = digit + "ABCDEFabcdef" .
+  tab      = '\t' .
+  lf       = '\n' .
+  cr       = '\r' .
+  files    = letter + digit + ":\\." .
+  chars    = ANY - '\'' .
+  strings  = ANY - '"'.
+  macros   = ANY - lf .
+
+TOKENS
+  name       = ( "$" | "_" | letter) { "_" | letter | digit } .
+  number     = digit { digit } [ "." { digit }] [ "U" | "u" | "L" | "l" ] .
+  HexNumber  = "0" ( "x" | "X" ) hexdigit { hexdigit } [ "U" | "u" | "L" | "l" ] .
+  string     = '"' { strings } '"' .
+  char       = "'" [ "\\" ] chars "'" .
+
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO cr lf
+
+IGNORE tab + lf + cr
+
+PRODUCTIONS
+
+  JScr                 =  stats .
+
+  stats                =  { stat } [retstat] .
+  
+  block                =  "{" stats "}" .
+
+  stat                 =  ";"
+                          | varlist "=" explist ";"
+                          | "break" ";"
+                          | block
+                          | "while" exp stat
+                          | "do" stat "while" exp
+                          | "if" exp stat ["else" stat ]
+                          | "for" name ("=" exp "," exp ["," exp] | { "," name} "in" explist) stat
+                          | "def" funcname funcbody
+                          .
+
+
+  retstat               = "return" [explist] ";" .
+
+  varlist               = var {"," var} .
+
+  var                   = name [ "[" exp "]" ].
+
+  funcname              = name {"." name} [":" name] .
+
+  funcbody              = "(" [explist] ")" block .
+
+  explist               = exp {"," exp} .
+
+  exp                   = LogORExp { AssignmentOperator explist }.
+
+  LogORExp             = LogANDExp   { "||" LogANDExp } .
+
+  LogANDExp            = InclORExp   { "&&" InclORExp }.
+
+  InclORExp            = ExclORExp   { "|" ExclORExp } .
+
+  ExclORExp            = ANDExp      { "^" ANDExp } .
+
+  ANDExp               = EqualExp    { "&" EqualExp } .
+
+  EqualExp             = RelationExp { ( "==" | "!=" ) RelationExp } .
+
+  RelationExp          = ShiftExp    { ( "<" | ">" | "<=" | ">=" ) ShiftExp }.
+
+  ShiftExp             = AddExp      { ( "<<" | ">>" ) AddExp } .
+
+  AddExp               = MultExp     { ( "+" | "-" ) MultExp } .
+
+  MultExp              = UnaryExp     { ( "*" | "/" | "%" ) UnaryExp } .
+
+  UnaryExp             = PostFixExp
+                         | ( "++" | "--" | UnaryOperator) UnaryExp
+                         .
+
+  PostFixExp           = Primary
+                         { "[" [ explist ] "]"
+                          | "(" [ explist ] ")"
+                          | "." name
+                          | "->" name
+                          | "++"
+                          | "--"
+                         } .
+
+  Primary              = varlist | string | char | number | "(" exp ")" | "[" [ explist ] "]" .
+
+  AssignmentOperator   =   "="  | "*=" | "/=" | "%=" | "+=" | "-=" | "&="
+                         | "^=" | "|=" | "<<=" | ">>=" .
+
+  UnaryOperator        = "+" | "-" | "*" | "!" | "&" | "~" .
+
+
+END JScr.

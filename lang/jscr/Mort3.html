@@ -1,0 +1,990 @@
+<html>
+<head>
+<title>Manual for jScripts 4.1</title>
+</head>
+<body>
+Manual for jScripts 4.1<br>
+<br>
+<A NAME="9.15"></A>9.15 ZIP archives<br>
+<br>
+<A NAME="9.15.1"></A>9.15.1 Important hints<br>
+<br>
+With the functions, which are currently available to me, it is not possible to overwrite files contained in an archive. If an already existing file is added again, it's really added another time to the archive, i.e., there are two entries for the same file. Not all packers cope with something like that. Due to this, I recommend to create a new archive if you're in doubt..<br>
+Another problem is the encoding of file names in ZIP archives. There is no standard for that, and unicode is not supported.<br>
+jScripts uses 每 like most Windows/DOS programs 每 the DOS code page 437. This might cause troubles if your files contain special characters or foreign languages (e.g. Cyrillic or Greek characters). Additionally, Java's ZIP functions use UTF8.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.15.2"></A>9.15.2 Compress a single file (ZipFile)<br>
+<br>
+ZipFile( source file, ZIP file, file name in archive [, rate] )<br>
+<br>
+Adds the given file to the archive. The source file (the file to compress) and the ZIP file must be given with the complete path. Contrary to this, the file name in the archive is usually with a relative path, or completely without a path.<br>
+<br>
+The compression rate ranges from 1=no compression to 9=best, if omitted, it defaults to 8.<br>
+<br>
+Example:<br>
+ZipFile( "\Storage\Test\manual.psw", "\Storage\mans.zip", \<br>
+"test\testman.psw" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.15.3"></A>9.15.3 Compress multiple files (ZipFiles)<br>
+<br>
+ZipFiles( source files, ZIP file [, subdirectories[, path in archive [, rate] ] ] )<br>
+<br>
+Adds the given files to the archive. The source files are given, like for XCopy or Move, with a fixed path and wildcards in the file name (e.g. "\My documents\*.psw").<br>
+If subdirectories is TRUE, the filename filter is also used for subdirectories, i.e., "\My documents\*.psw" would include "\My documents\Word\x.psw", too.<br>
+In the archive, the given path of the source files is omitted, and 每 if one is passed 每 prefixed with the path in archive. I.e., if no path in archive is given, "\My documents\Word\x.psw" will become "Word\x.psw" in the archive, "\My documents\x.psw" will become "x.psw", etc. If the path in archive was e.g. "docs", the file names in the archive would become "docs\Word\x.psw" resp. "docs\x.psw".<br>
+<br>
+Examples:<br>
+ZipFiles("\Storage\Test\*.psw", "\Storage\mans.zip", TRUE, "test")<br>
+Compresses all *.psw files from \Storage\Test and subdirectories to the directory "test" in the archive \Storage\mans.zip<br>
+<br>
+ZipFiles( "\Storage\Test\*.jpg", "\Storage\jpgs.zip" )<br>
+Compresses all *.jpg files from \Storage\Test to the main directory of the archive \Storage\jpgs.zip. Subdirectories are ignored.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.15.4"></A>9.15.4 Extract single file (UnzipFile)<br>
+<br>
+UnzipFile( ZIP file, file name in archive, target file )<br>
+<br>
+Unzips the given file.<br>
+The target file must be given with complete path, the path of the compressed file will be ignored for the target file.<br>
+<br>
+Example:<br>
+UnzipFile( "\Storage\mans.zip", "test\test.psw", \<br>
+"\Storage\test.psw" )<br>
+Unzips the file test\test.psw" of the archive "\Storage\mans.zip" to "\Storage\test.psw"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME=9.15.5></A>9.15.5 Extract entire archive (UnzipAll)<br>
+UnzipAll( ZIP file, target directory )<br>
+<br>
+Unzip all files contained in the archive to the given directory. Paths contained in the archive will be used and, if necessary, created.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.15.6"></A>9.15.6 Extract a path of an archive (UnzipPath)<br>
+<br>
+UnzipPath( ZIP file, path in archive, target directory )<br>
+<br>
+Unzips all files located in the given path in the given archive.<br>
+Subdirectories of that path are unzipped, too. The given path name is not created in the target directory, but its subdirectories will. The target directory must exist.<br>
+<br>
+Example:<br>
+UnzipPath( "\Storage\mans.zip", "test", "\Storage\test-unzip" )<br>
+Unzips all files contained in the directory "test" and its subdirectories of the archive <br>
+"\Storage\mans.zip" to "\Storage\test-unzip". I.e., "test\sub\x.psw" would be extracted to "\Storage\test-unzip\sub\x.psw".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.15.7"></A>9.15.7 Extract entire TGZ archive (<font color=red>TGZX</font>)<br>
+<font color=red>TGZX</font>( <font color=green><B>TGZ file</B></font> [, <font color=green>Target directory</font>])<br>
+<br>
+Extract Tar Gzip all files contained in the archive to the given directory. Paths contained in the archive will be used and, if necessary, created.<br>
+<br>
+Eg. <b><font color=green>TGZX("\\Windows\\Setup.tgz"<font color=red>,"\\"</font>)</font></b> //means Extract TGZ file to Root Directory with contained directory<br>
+Equals. <font color=green><b>TGZX("\\Windows\\Setup.tgz")</b></font> //Because the default Extract output Directory is "root".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.16"></A>9.16 Connections<br>
+<br>
+<A NAME="9.16.1"></A>9.16.1 Establish connection (Connect)<br>
+<br>
+Connect<br>
+Connect( connection name )<br>
+Connect( title, message )<br>
+<br>
+Connects to the Internet.<br>
+Connect without a parameter tries to use the default connection, but at least on some PPCs this doesn't work reliable.<br>
+Connect with a connection name uses the given connection. The connection names can be set freely in the system's settings and are usually initialized by your operator. The Internet connection is usually named "Internet", "The Internet" or similar.<br>
+If a title and message are given as parameters, all available connections are listed (like using Choice), and the chosen one is used.<br>
+<br>
+Not available for: PC, PNA<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.16.2"></A>9.16.2 End connection (CloseConnection/Disconnect)<br>
+<br>
+CloseConnection<br>
+Disconnect<br>
+<br>
+CloseConnection releases a connection that's been established with Connect. This only signals the system, jScripts won't use this connection anymore. It's up to the system how it reacts to this, so the connection might stay established.<br>
+Contrary to this, Disconnect terminates all connections, including ActiveSync. Sadly, since WM5 AKU3, this doesn't work anymore. Currently, there's no known way to hang up a connection from a program.<br>
+<br>
+Not available for: PC, PNA<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.16.3"></A>9.16.3 Check connection (Connected/InternetConnected)<br>
+<br>
+bool = Connected()<br>
+bool = InternetConnected( [ URL ] )<br>
+<br>
+Connected checks, whether there is an "RAS connection" ("Remote Access"). This is always the case for ActiveSync connections, for other connections on most devices 每 but not all...<br>
+Returns TRUE if a connection exists, FALSE if not.<br>
+<br>
+InternetConnected checks, whether a connection to the Internet exists. Sadly, most devices return "true" for a pure connection check (i.e., the function returns TRUE) and checks the connection only if a target server is accessed. Due to this, you can pass an URL, which will be used for a connection test (e.g. "http://www.google.com").<br>
+<br>
+Not available for: PC, PNA<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.16.4"></A>9.16.4 Bluetooth Function (GetBtState/SetBtState)<br>
+<br>
+Bluetooth have 3 state, there are PowerOff/Connectable/Discoverable(<font color = red>0/1/2</font>)<br>
+<br>
+State = <font color=red>GetBtState</font>()<br>
+<br>
+if Bluetooth is <font color=red>poweroff</font>, state is <font color=red>0</font><br>
+if Bluetooth is <font color=red>Connectable</font>, state is <font color=red>1</font><br>
+if Bluetooth is <font color=red>Discoverable</font>, state is <font color=red>2</font><br>
+<br>
+<font color=red>SetBtState</font>(0) <font color=green>//Set Bluetooth state to PowerOff</font><br>
+<font color=red>SetBtState</font>(1) <font color=green>//Set Bluetooth state to Connectable</font><br>
+<font color=red>SetBtState</font>(2) <font color=green>//Set Bluetooth state to Discoverable</font><br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.16.5"></A>9.16.5 Radio Control Function (GetRadioMode/SetRadioMode)<br>
+<br>
+This function is test only in my Tornado Smartphone, to control radio on/off, and get it's state<br>
+<br>
+RadioMode<font color=blue> = </font><font color=red>GetRadioMode()</font><br>
+<br>
+return value:On/Off<br>
+<br>
+<br>
+<font color=red>SetRadioMode</font>(ModeState)<br>
+<br>
+ModeState's value is string "On" or "Off"<br>
+On to turn on the radio<br>
+Off to turn on the radio(Into the Flight Mode)<br>
+<br>
+example:<br>
+<br>
+<font color=blue>if</font> (<font color=red>GetRadioMode()</font><font color=blue>==</font><font color=gray>"On"</font>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>SetRadioMode</font>(<font color=gray>"Off"</font>)<br>
+<font color=blue>else</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>SetRadioMode</font>(<font color=gray>"On"</font>)<br>
+<font color=blue>end</font><br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+
+<A NAME="9.17"></A>9.17 Internet access<br>
+<br>
+<A NAME="9.17.1"></A>9.17.1 Set proxy (SetProxy)<br>
+<br>
+SetProxy( proxy )<br>
+<br>
+Set the proxy for http access. Using Windows Mobile, it's not quite easy to use the proxy from the system configuration...<br>
+Should be something like "proxy.foo.bar:8080".<br>
+<br>
+Not available for: PNA<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.17.2"></A>9.17.2 Download (Download)<br>
+<br>
+Download( URL, target file )<br>
+<br>
+Similar to Copy, but uses an URL ("http://..." or "ftp://...") as source and shows a progress window, because this usually takes a bit longer...<br>
+<br>
+Example:<br>
+Download( "http://www.sto-helit.de/test.txt", \<br>
+"\Storage\text.txt" )<br>
+<br>
+Not available for: Smartphone, PNA<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.17.3"></A>9.17.3 Other possibilities<br>
+<br>
+All file operations reading a single file, will also work with an URL as source file. This regards Copy, ReadFile, IniRead, and some ForEach variations.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.18"></A>9.18 Directories<br>
+<br>
+<A NAME="9.18.1"></A>9.18.1 Create directory (MkDir)<br>
+<br>
+MkDir( directory )<br>
+<br>
+Creates the directory.<br>
+It's not possible to create multiple levels at once!<br>
+I.e., MkDir( "\My documents\Some\Path" ) will fail if the "Some" subdirectory does not already exist.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.18.2"></A>9.18.2 Remove directory (RmDir)<br>
+<br>
+RmDir( directory )<br>
+<br>
+Removes the directory.<br>
+There mustn't be any files or subdirectories contained in the folder.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.18.3"></A>9.18.3 Change directory (ChDir)<br>
+<br>
+ChDir( directory )<br>
+<br>
+Makes the directory the current directory.<br>
+Only available for PC version, Windows Mobile hasn't a "current directory" concept.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.18.4"></A>9.18.4 Getting system paths (SystemPath)<br>
+<br>
+x = <font color=blue>SystemPath</font>( type )<br>
+<br>
+Receives the localized directory name for certain locations.<br>
+The type must be given as string value, e.g. "StartMenu".<br>
+<br>
+Possible values:<br>
+ProgramsMenu.........."Programs" in the start menu<br>
+StartMenu.............The start menu, doesn't work on Smartphones<br>
+Startup...............Startup folder (entries are run after soft reset resp. if Windows is started)<br>
+Documents............."\My documents" or localization, doesn't work on devices with PPC2002<br>
+ProgramFiles.........."\Program files" or localization, doesn't work on devices with PPC2002<br>
+AppData..............."\Application data" or localization<br>
+ScriptExe.............Path to jScripts.exe (without file name), doesn't work on Smartphones<br>
+ScriptPath............Path to the current script (without file name)<br>
+ScriptName............Name of the current script (no path+extension)<br>
+ScriptExt.............Extension of the current script (".mscr" or ".mortrun").<br>
+<br>
+I.e., you could execute the current script with<br>
+Run ( <font color=blue>SystemPath</font>("ScriptExe") \ "jScripts.exe", \<br>
+<font color=blue>SystemPath</font>("ScriptPath") \ <font color=blue>SystemPath</font>("ScriptName") .. \<br>
+<font color=blue>SystemPath</font>("ScriptExt") )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19"></A>9.19 Registry<br>
+<br>
+<A NAME="9.19.1"></A>9.19.1 Reading registry entries (RegRead)<br>
+<br>
+value = RegRead( root, key, value name )<br>
+<br>
+Reads the given value from the registry.<br>
+For root these values are allowed:<br>
+HKCU...........HKEY_CURRENT_USER<br>
+HKLM...........HKEY_LOCAL_MACHINE<br>
+HKCR...........HKEY_CLASSES_ROOT<br>
+HKUS...........HKEY_USERS<br>
+Only the four letter abbreviations are supported! Remember to use quotes, if you don't want to use a probably undefined variable like HKCU.<br>
+If the value name is an empty string (""), the default value is used. (In registry editors usually displayed as "<Default>" or "@").<br>
+The value's data type is automatically regarded. DWords are returned as integer number, string values as strings, binary data as a string containing the data as hex dump (e.g. "010ACF"), and "MultiString"s as array with string elements.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19.2"></A>9.19.2 Writing registry entries (<font color=red>RegWriteString</font>/<font color=red>RegWriteDWord</font>/<font color=red>RegWriteBinary</font>/<font color=red>RegWriteMultiString</font>)<br>
+<br>
+<font color=red>RegWriteString</font>( root, key, value name, value )<br>
+<font color=red>RegWriteDWord</font>( root, key, value name, value )<br>
+<font color=red>RegWriteBinary</font>( root, key, value name, value )<br>
+<font color=red>RegWriteMultiString</font>( root, key, value name, array )<br>
+<br>
+Writes a value to the registry.<br>
+Valid values for root are listed at 9.19.1 Reading registry entries (RegRead).<br>
+If the value name is an empty string (""), the default value is used.<br>
+<font color=red>RegWriteString</font> writes a string value (a numeric value is automatically converted).<br>
+<font color=red>RegWriteDWord</font> writes a numeric value (a string value is automatically converted, invalid strings will become "0").<br>
+<font color=red>RegWriteBinary</font> writes binary data. The given value must be a string containing a hex dump (e.g. "010A"), spaces and similar characters are not allowed in it!<br>
+<font color=red>RegWriteMultiString</font> writes a list of string values (given as array). The given value must be an array. All elements from 1 to the first unassigned number are regarded, if the elements will be converted to strings if necessary.<br>
+<br>
+Examples:<br>
+<font color=red>RegWriteDWord</font>( "HKCU", "Software\Microsoft\Inbox\Settings", \<br>
+"SMSDeliveryNotify",1 )<br>
+(Delivery notification for SMS on many phone edition devices)<br>
+<br>
+<font color=red>RegWriteString</font>( "HKCU", "Software\Mort\MortPlayer\Skins", \<br>
+"Skin", "Night" )<br>
+<br>
+<font color=red>RegWriteBinary</font>( "HKCU", "Software\Mort\Dummy", "", "C000" )<br>
+<br>
+<font color=red>RegWriteMultiString</font>( "HKCU", "Software\Mort\Dummy", "Days",<br>
+Array( "Mon", "Tue", "Wed" ) )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19.3"></A>9.19.3 Checking existence of a value (<font color=red> RegValueExists </font>)<br>
+<br>
+bool = <font color=red> RegValueExists </font>( root, key, value name )<br>
+Returns TRUE, if the given value exists, FALSE if it doesn't.<br>
+Values for root are as in RegRead.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19.4"></A>9.19.4 Checking existence of a key (registry path) (<font color=red> RegKeyExists </font>)<br>
+<br>
+bool = <font color=red> RegKeyExists </font>( root, key )<br>
+Returns TRUE, if the given key (a "subdirectory" in the registry) exists, FALSE if it doesn't.<br>
+Values for root are as in RegRead.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19.5"></A>9.19.5 Removing a registry value (<font color=red> RegDelete </font>)<br>
+<br>
+<font color=red> RegDelete </font>( root, key, value name )<br>
+<br>
+Removes the registry value.<br>
+Values for root are as in RegRead.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.19.6"></A>9.19.6 Removing a registry key (registry path) (<font color=red> RegDelete </font>Key)<br>
+<br>
+<font color=red> RegDelete </font>Key( root, key, values, sub keys )<br>
+<br>
+Removes an entire key (a "subdirectory" in the registry).<br>
+If values is TRUE, all contained values are removed, too.<br>
+values is also used for sub keys if sub keys is TRUE.<br>
+I.e., <font color=red> RegDelete </font>Key( "HKCU", "\Software\Something", FALSE, TRUE ) would remove only empty sub keys (because sub keys with entries can't be deleted).<br>
+If the key can't be removed, a message is shown if the ErrorLevel's on "warn" or lower.<br>
+The path mustn't be empty to avoid accidental removing of an entire registry section (e.g. if there's a typo in a variable). Still, this command has to be handled with care, esp. when using variables or expressions for the path!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20"></A>9.20 Dialogs<br>
+<br>
+<A NAME="9.20.1"></A>9.20.1 Free text input (Input)<br>
+<br>
+string = Input( message [, title [, numeric [, multiline<br>
+[, default ]]]] )<br>
+<br>
+Opens a simple dialog that allows to enter any text, which will be returned by the function.<br>
+If numeric is TRUE, only digits can be entered (no "-" or ".", too!).<br>
+If multiline is TRUE, a multi line text box is displayed. On most devices, numeric will be ignored if this option is used.<br>
+If you've given a default, it will be shown in the edit box.<br>
+Note the return value will be a string even if numeric is TRUE.<br>
+See also 9.20.10 Set font for big messages (<font color=blue>SetMessageFont</font>)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.2"></A>9.20.2 Message (Message/MsgBox)<br>
+<br>
+Message( text [, title ] )<br>
+MsgBox( text [, title ] )<br>
+<br>
+Shows the given text in a message window.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.3"></A>9.20.3 Big message with scrollbar (BigMessage/MsgBoxX)<br>
+<br>
+BigMessage( text [ , title ] )<br>
+MsgBoxX( text [ , title ] )<br>
+<br>
+Similar to Message, but doesn't use the system's message box function, which resizes to the contained text (except for Smartphones). Instead, a fixed sized internal dialog is used, which shows the text in a scrollable text box.<br>
+See also 9.20.10 Set font for big messages (<font color=blue>SetMessageFont</font>)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.4"></A>9.20.4 Message with countdown/condition (SleepMessage)<br>
+<br>
+SleepMessage( [seconds,] message [,Width ,Height] [, title [ , Type [ , condition ] ] ] )<br>
+<font color=blue>Type</font>:0,1,2(No Control Button/Menu, OK Button/Menu, OK Cancel Buttons/Menu)<br>
+<font color=blue>Width, Height</font> Only used in Smartphone!<br>
+<br>
+See 9.10.2 Wait message with countdown / condition (SleepMessage) and 9.20.10 Set font for big messages (<font color=blue>SetMessageFont</font>)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.5"></A>9.20.5 Simple questions (Question)<br>
+<br>
+Shows a simple question. This uses a default dialog from the system, so the button labels are localized by Windows.<br>
+<br>
+int = <font color=blue>Question</font>( [seconds,] message [,Width ,Height] [, title [ , Type [ , condition ] ] ] )<br>
+<font color=blue>Type</font>:0,1,2(No Control Button/Menu, OK Button/Menu, OK Cancel Buttons/Menu)<br>
+<font color=blue>Width, Height</font> Only used in Smartphone!<br>
+<br>
+The type must be a string, so you have to use quotes ("YesNo") or e.g. a variable assigned with the wanted type string.<br>
+<br>
+Return values:<br>
+"OK": 1 (predefined variable "YES")<br>
+"Cancel": 0 (predefined variable "No")<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.6"></A>9.20.6 Selection from a list (Choice)<br>
+<br>
+int = <font color=blue>Choice</font>( title, hint, default, timeout, value, value<br>
+{, value} )<br>
+int = <font color=blue>Choice</font>( title, hint, default, timeout, array )<br>
+<br>
+Works similar to 8.4 ChoiceDefault, but returns the selected entry instead of starting a control structure.<br>
+I.e., Switch( <font color=blue>Choice</font>( ... ) ) and ChoiceDefault( ... ) do the same.<br>
+It's handy to use Choice as function, if the value is required later on or at different locations.<br>
+See also 9.20.9 Set entry size and font for choices (<font color=blue>SetChoiceEntryFormat</font>)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.7"></A>9.20.7 Select directory (<font color=blue>SelectDirectory</font>)<br>
+<br>
+string = <font color=blue>SelectDirectory</font>( title, message [, default] )<br>
+<br>
+Shows a dialog to select an existing directory. If a default is given, the path is preselected if it exists.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.8"></A>9.20.8 Get filename (<font color=blue>SelectFile</font>)<br>
+<br>
+string = <font color=blue>SelectFile</font>( title, save, [filter [,info [,default]]] )<br>
+<br>
+Shows a dialog to select a file.<br>
+If save is TRUE, the user is able to enter a new filename, otherwise he can only select existing files.<br>
+The filter allows to show only files that fit to a file mask, like "*.txt" or "prefs.*".<br>
+The info works different for PC and the other versions. On the PC, the system's dialog is used. Since it doesn't allow additional texts (well, OK, it does, but way too complicated for a script language that should be fast and lightweight), the info text is shown in the file type description (where it usually says something like "All files (*.*)"). Since Windows Mobile's default dialog is quite terrible, an own dialog is used, which shows the info on top if one is given. If you want to use your script on both platforms, you might want to use a text that works for both, like "Select text file".<br>
+If a default is given, the path/file is preselected (if save is FALSE only if it exists).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.9"></A>9.20.9 Set entry size and font for choices (<font color=blue>SetChoiceEntryFormat</font>)<br>
+<br>
+<font color=blue>SetChoiceEntryFormat</font>( entry size [, font size, font name ] )<br>
+<br>
+This modifies the height of each entry and 每 if given 每 the font of choice lists. That regards all choice dialogs shown after the command is invoked, including both the function and the control structure.<br>
+The entry size is in pixels. It will 每 like the font size 每 be doubled for mobile devices with VGA.<br>
+The font size is in points, the font name is e.g. "Courier", "Tahoma", etc. Keep in mind not all devices include all fonts, "Tahoma" (for mobile devices) or "Arial" (for desktop) usually are a good idea.<br>
+See also 8.4 Branching with selection dialog (Choice, ChoiceDefault) and 9.20.6 Selection from a list (Choice)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.20.10"></A>9.20.10 Set font for big messages (<font color=blue>SetMessageFont</font>)<br>
+<br>
+<font color=blue>SetMessageFont</font>( font size, font name )<br>
+<br>
+This modifies the font for message dialogs created by jScripts, i.e. BigMessage, SleepMessage, and Input. "Message" and "Question" use a system dialog which doesn't support own fonts.<br>
+The parameters are like the font parameters in <font color=blue>SetChoiceEntryFormat</font> above.<br>
+See also 9.20.3 Big message with scrollbar (BigMessage), 9.20.1 Free text input (Input) and 9.20.4 <br>
+Message with countdown/condition (SleepMessage).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21"></A>9.21 Processes (running applications)<br>
+<br>
+<A NAME="9.21.1"></A>9.21.1 Process handling supported (SupportsProcHandling)<br>
+<br>
+bool = <font color=blue>SupportsProcHandling</font>()<br>
+<br>
+Returns TRUE, if process functions like Kill and ProcExists are supported on the device.<br>
+This function is thought for PNAs, but is also supported on other devices.<br>
+jScripts functions like Kill or ProcExists require a system library (toolhelp.dll), which is not included on all "stripped down" Windows CE devices. Thus, if you try to use those functions on a device without it, it will cause an error message. With this function, you're able to avoid it (e.g. by using window functions as makeshift) or show your own error message.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.2"></A>9.21.2 Checking existence of a process (ProcExists)<br>
+<br>
+bool = <font color=blue>ProcExists</font>( process name )<br>
+<br>
+Returns TRUE, if the given process is running, FALSE if not.<br>
+The "process name" is the name of the EXE. It's usually better to give it without path, e.g. "solitaire.exe", because that's faster and less error prone (wrong path typo run from other location). But it's also possible to check with the full path name. On desktop Windows, full path checks don't work for all programs, esp. for system threads and services it's not possible to query the path from the system.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.3"></A>9.21.3 Checking existence of a script process (ScriptProcExists)<br>
+<br>
+bool = Script<font color=blue>ProcExists</font>( script name )<br>
+<br>
+Returns TRUE, if the given jScripts is running, FALSE if not.<br>
+"ProcExists" isn't working for jScriptss, because the process name is always "jScripts.exe".<br>
+The script name can be either the script name without path (e.g. "myscript.mscr") or with the full path (e.g. "\My documents\myscript.mscr"), in the PC version, also the drive letter is required.<br>
+See also informations in 9.21.7 End a running script (KillScript).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.4"></A>9.21.4 Process name of active window (ActiveProcess)<br>
+<br>
+string = <font color=blue>ActiveProcess</font>( [ full path ] )<br>
+<br>
+Returns the program name of the currently active window.<br>
+<br>
+If "full path" is TRUE, the complete path is included, otherwise it's the executable without path. <br>
+With desktop Windows, it's not always possible to get the entire path.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.5"></A>9.21.5 Process name of given window (WindowProcess)<br>
+<br>
+string = <font color=blue>WindowProcess</font>( window title [, full path ] )<br>
+<br>
+Returns the program name of the window with the given title.<br>
+If "full path" is TRUE, the complete path is included, otherwise it's the executable without path. <br>
+With desktop Windows, it's not always possible to get the entire path.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.6"></A>9.21.6 End a running process (Kill)<br>
+<br>
+<font color=blue>Kill</font>( process name )<br>
+<br>
+Terminates the application. The parameter must be either the name of the exe without path (e.g. solitare.exe) or include the entire path. Like with ProcExists, you should prefer the version without path. See 9.21.2 Checking existence of a process (ProcExists) for more details.<br>
+WARNING: This command kills the process regardless of any losses!<br>
+It could cause data loss, crashes, or error messages.<br>
+Wherever possible, you should use Close instead, which allows the application to end gracefully (save/close files, etc.).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.21.7"></A>9.21.7 End a running script (KillScript)<br>
+<br>
+<font color=blue>KillScript</font>( script name )<br>
+<br>
+Ends the given script. KillScript waits up to 3 seconds for the current command of the script to be finished, to avoid troubles with improperly terminated actions. If that doesn't work, the process is terminated similar to Kill.<br>
+The script name can be either the script name without path (e.g. "myscript.mscr") or with the full path (e.g. "\My documents\myscript.mscr"), in the PC version, also the drive letter is required.<br>
+If the script name is given without path, it's possible that another script with the same name as the one you wanted, but from another path, is running. So it might be a good idea to give the full path if it's possible (e.g. with 9.18.4 Getting system paths (SystemPath)).<br>
+Keep in mind a script can't be run twice. If you want to start and stop a background task, it might be a good idea to create an additional script that starts the task (Run command) if it isn't running (use ScriptProcExists for that), and kill the script with KillScript if it is running.<br>
+Do NOT use RunWait or CallScript, because with this, the invoking script would remain active until the background task is finished, and thus couldn't be invoked a second time to kill the background script!<br>
+Example:<br>
+backScript = <font color=blue>SystemPath</font>( "ScriptPath" ) \ "background.mscr"<br>
+If ( Script<font color=blue>ProcExists</font>( backScript ) )<br>
+If ( <font color=blue>Question</font>( "Stop background process" ) = YES )<br>
+<font color=blue>KillScript</font>( "background.mscr" )<br>
+EndIf<br>
+Else<br>
+Run( backScript )<br>
+EndIf<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.22"></A>9.22 Signals<br>
+<br>
+<A NAME="9.22.1"></A>9.22.1 Modifying the system volume (SetVolume)<br>
+<br>
+<font color=blue>SetVolume</font>( value )<br>
+<br>
+Sets the system volume to the given value. Possible values are 0 (off) to 255 (loudest).<br>
+Some devices, like the Loox720, round to certain steps between (usually 4 or 16 levels), most devices really support all 256 levels.<br>
+<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.22.2"></A>9.22.2 Play a WAV file (PlaySound)<br>
+<br>
+<font color=blue> PlaySound </font>( WAV file )<br>
+<br>
+Plays the given file. The script is paused until the sound is played.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.22.3"></A>9.22.3 Vibrate (Vibrate)<br>
+<br>
+<font color=blue> Vibrate </font>( milliseconds )<br>
+<br>
+Lets the device vibrate for the given time.<br>
+The PC version beeps instead.<br>
+For PPCs, the vibrator is accessed like an status LED, but there's no standard for its number. <br>
+jScripts assumes it's the last available "LED", which seems to work for most devices. But it might also happen, that some LED lights up or nothing happens at all.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23"></A>9.23 Display / screen<br>
+<br>
+<A NAME="9.23.1"></A>9.23.1 Get the color at a screen position (ColorAt)<br>
+<br>
+int = <font color=blue> ColorAt </font>( x, y )<br>
+<br>
+Gets the color of the screen's pixel at the given position. At least on some devices, the title bar is ignored, i.e. it receives the color of the underlying today background.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.2"></A>9.23.2 Create the color code from RGB values (RGB)<br>
+<br>
+int = <font color=blue> RGB </font>( red, green, blue )<br>
+<br>
+Converts the decimal values of red, green, and blue parts (0-255 each) into the the same format as used by <font color=blue> ColorAt </font>(...), so it's useful for comparisons.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.3"></A>9.23.3 Get the red/green/blue part of a color code (Red, Green, Blue)<br>
+<br>
+int = <font color=blue> Red </font>( color )<br>
+int = <font color=blue> Green </font>( color )<br>
+int = <font color=blue> Blue </font>( color )<br>
+<br>
+These functions are the counterpart to RGB. They extract the red, green, resp. blue part (0-255 each) of a color code returned by ColorAt or RGB.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.4"></A>9.23.4 Rotate the screen (Rotate)<br>
+<br>
+<font color=blue> Rotate </font>( orientation )<br>
+<br>
+Rotates the screen.<br>
+Valid values are: 0=default (portrait), 90=right handed, 180=upside down, 270=left handed Not available for: Smartphone, PC, PPC/PNA with WM2003 or below<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.5"></A>9.23.5 Set backlight intensity (SetBacklight)<br>
+<br>
+<font color=blue> SetBacklight </font>( battery, external )<br>
+<br>
+Sets the brightness of the backlight to the given values.<br>
+Battery is for battery power, external for external power.<br>
+Valid values are between 0 and 100.<br>
+This command will not work on all devices!<br>
+Also, the value for the highest luminance differs for each device. Currently, I know about devices with 10, 60, or 100 as highest possible value, some devices even work the other way around (e.g. 10=off, 0=brightest) or have an exception for the brightest value (e.g. 0=brightest, 1=darkest, 10=next to brightest).<br>
+<br>
+Not available for: PC, PNA, Smartphone<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.6"></A>9.23.6 Toggle display on/off (ToggleDisplay)<br>
+<br>
+<font color=blue> ToggleDisplay </font>( on )<br>
+<br>
+Turns the display on (on = TRUE) or off (on = FALSE).<br>
+<br>
+Not available for: PC, PNA, Smartphone<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.7"></A>9.23.7 Get screen size (ScreenWidth, ScreenHeight)<br>
+<br>
+int = <font color=blue> ScreenWidth </font>()<br>
+int = <font color=blue> ScreenHeight </font>()<br>
+<br>
+Returns the width resp. the height of the screen in pixels.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.8"></A>9.23.8 Check screen informations (orientation/resolution) (Screen)<br>
+<br>
+bool = <font color=blue> Screen </font>( type )<br>
+<br>
+Returns TRUE, if the screen fulfills the type condition, FALSE if it doesn't.<br>
+Allowed values for type:<br>
+"landscape" (in landscape orientation)<br>
+<br>
+"portrait"<br>
+"square"<br>
+"vga"<br>
+"qvga"<br>
+<br>
+(in portrait orientation)<br>
+(square screen)<br>
+(VGA resolution 每 no matter if "default" or "real/true VGA")<br>
+(QVGA resolution)<br>
+<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.9"></A>9.23.9 Redraw today screen (<font color=blue> RedrawToday </font>()<br>
+<br>
+<font color=blue> RedrawToday </font><br>
+<br>
+Redraws the Today screen. Useful if you did any modifications in the registry...<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.23.10"></A>9.23.10 Show/hide wait cursor (ShowWaitCursor/HideWaitCursor)<br>
+<br>
+ShowWaitCursor<br>
+HideWaitCursor<br>
+<br>
+Shows (ShowWaitCursor) or hides (HideWaitCursor) the hourglass (or rotating disc in Windows Mobile).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.24"></A>9.24 Clipboard<br>
+<br>
+<A NAME="9.24.1"></A>9.24.1 Copy text to the clipboard (SetClipText)<br>
+<br>
+SetClipText( text )<br>
+<br>
+Copies the given text to the clipboard.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.24.2"></A>9.24.2 Get text from the clipboard (ClipText)<br>
+<br>
+string = ClipText()<br>
+<br>
+Returns the text from the clipboard.<br>
+It is a precondition, that a text variant of the copied data is available in the clipboard. This depends from the application that filled the clipboard.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.25"></A>9.25 Memory<br>
+<br>
+<A NAME="9.25.1"></A>9.25.1 Available main memory (FreeMemory)<br>
+<br>
+int = FreeMemory()<br>
+<br>
+Returns the available main memory in kilobytes.<br>
+Devices with an older system than Windows Mobile 5 dynamically split the device's memory between memory for programs (FreeMemory()) and a "RAM disk" for the main directory (FreeDiskSpace("\")).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.25.2"></A>9.25.2 Size of the main memory (TotalMemory)<br>
+<br>
+int = TotalMemory()<br>
+<br>
+Returns the total size of the main memory in kilobytes.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.26"></A>9.26 Energy<br>
+<br>
+<A NAME="9.26.1"></A>9.26.1 Check if externally powered (ExternalPowered)<br>
+<br>
+bool = ExternalPowered()<br>
+<br>
+Returns TRUE, if the device is externally powered, FALSE if a battery is used.<br>
+The PC variant always returns TRUE, even if it's a notebook powered by battery.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.26.2"></A>9.26.2 Current battery level (BatteryPercentage, BackupBatteryPercentage)<br>
+<br>
+int = BatteryPercentage()<br>
+int = BackupBatteryPercentage()<br>
+<br>
+Returns the current battery level in percent. If the device is externally powered, this value might be incorrect on some devices.<br>
+About the same goes for the backup battery. Be aware this isn't supported on every device, because some use condensers, some just don't support querying, and some don't have a backup battery (esp. cheap devices with not exchangeable battery or devices with WM5 and newer, which keep their data also without backup battery). It's device dependent what this function returns in those cases.<br>
+The PC variant always returns 100, even if it's a notebook powered by battery.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.26.3"></A>9.26.3 Turn off device (PowerOff)<br>
+<br>
+PowerOff<br>
+<br>
+Turns off the device (to standby mode). After power on, the script is continued. Be aware that accessing the storage cards usually doesn't work directly after power on. Thus, a Sleep and/or While( not FileExists( ... ) ) might be useful to avoid errors...<br>
+<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.26.4"></A>9.26.4 Avoid automatic power off (IdleTimerReset)<br>
+<br>
+IdleTimerReset<br>
+<br>
+Resets the idle timer of the system. This way, you can avoid (if called in a loop) or postpone the automatic power off.<br>
+Sadly, the system uses another timer for turning off the background light, which can't be queried or modified (at least there's no documentation about it). So there's no way to avoid that.<br>
+Also, there seem to be some rare devices where IdleTimerReset has no effect.<br>
+<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.27"></A>9.27 System<br>
+<br>
+<A NAME="9.27.1"></A>9.27.1 Get the system version (SystemVersion)<br>
+<br>
+value = SystemVersion( [element] )<br>
+<br>
+Returns the version of the system. If no or an invalid parameter is given, it returns a string in the format major.minor.build, for example 5.1.2600 for XP with SP2 or 5.1.195 for WM5.<br>
+<br>
+With a parameter, you can get single parts. Available parameters:<br>
+"major"..........returns the major version number (integer)<br>
+"minor"..........returns the minor version number (integer)<br>
+"build"..........returns the build number (integer)<br>
+"platform"...... returns the platform, one of "Win95" (includes 98 and Me), "WinNT" (includes XP and Vista), and "WinCE" (includes Smartphone / PPC / Windows Mobile).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.27.2"></A>9.27.2 Get the current jScripts variant (jScriptsType)<br>
+<br>
+string = jScriptsType()<br>
+<br>
+Returns, which jScripts variation is used to execute the script. Currently, there are these return <br>
+values:<br>
+"PPC"........PocketPC<br>
+"PC".........PC (Desktop)<br>
+"SP".........Smartphone<br>
+"PNA"....... PocketNavigation (downsized Windows Mobile devices for navigation)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.27.3"></A>9.27.3 Get the current jScripts version (jScriptsVersion, <br>
+<br>
+GetjScriptsVersion)<br>
+string = jScriptsVersion()<br>
+GetjScriptsVersion( variable, variable, variable, variable )<br>
+<br>
+Gets the version number of jScripts, either as string ("a.b.c.d") or into single variables (integer values).<br>
+When using the function jScriptsVersion, the parts are concatenated with dots, (e.g. "4.1.0.0"), the command GetjScriptsVersion assigns each part to a separate variable.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.27.4"></A>9.27.4 Restart device (Reset)<br>
+<br>
+Reset<br>
+<br>
+Executes a soft reset. Please use it only in scripts used only by yourself or after a warning / query.<br>
+<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="10"></A>10 Old syntax and commands<br>
+<br>
+The following syntax, conditions, and commands are still supported for compatibility reasons, but shouldn't be used any longer.<br>
+<br>
+They're primarily listed in this manual to allow you to understand (and maybe convert) old scripts.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="10.1"></A>10.1 Old syntax<br>
+<br>
+In older versions, the syntax was different:<br>
+Variables always had to be enclosed in %...%, except when they were assigned by a command (like Set or GetTime).<br>
+Command parameters weren't given in parentheses, and the parameters weren't expressions by default but divided as follows:<br>
+♂ { ... }: An expression<br>
+♂ %...%: A variable<br>
+♂ "...": A fixed string<br>
+♂ everything else: An unquoted string, that ends et the next comma or end of line. <br>
+Surrounding spaces/tabulators are removed. For commands assigning a variable (like GetTime) this might also be variable names. %...% caused the variable's contents to be used as variable name.<br>
+Example:<br>
+Copy \Storage\test.txt, { %zielpfad% \ "test.txt" }, %overwrite%<br>
+instead of<br>
+Copy( "\Storage\test.txt", zielpfad \ "test.txt", overwrite )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="10.2"></A>10.2 Old conditions<br>
+<br>
+The old condition syntax is alternative to parentheses, i.e., something like If wndExists <br>
+"Window"", not If ( wndExists "Window" )".<br>
+The parameters for those old conditions aren't expressions, and mustn't be given in parentheses! <br>
+(Except for { ... } and "expression")<br>
+<br>
+expression expression<br>
+{ expression }<br>
+<br>
+Alternative styles for the now common ( ... )<br>
+{...} was done to allow a style similar to the old expression syntax for parameters.<br>
+Checks the given expression.<br>
+<br>
+equals value1, value2<br>
+<br>
+Returns true if the two values are equal. Usually only makes sense, if at least one of the parameters is a variable.<br>
+<br>
+fileExists file<br>
+<br>
+Checks whether the given file exists. If the parameter identifies a directory, the condition will be false!<br>
+<br>
+dirExists directory<br>
+<br>
+Checks whether the given directory exists. If the parameter identifies a file, the condition will be false!<br>
+<br>
+procExists application<br>
+<br>
+Checks whether the given application is running. The parameter must be the name of the exe without path (e.g. solitare.exe).<br>
+<br>
+wndExists window title<br>
+<br>
+Checks whether a window exists, which includes with the given string in it's title. E.g. "If wndExists Word" will be true if a window named "PocketWord" exists.<br>
+<br>
+wndActive window title<br>
+<br>
+Similar to "wndExists", but it's only true if the given window is the active (foreground) window.<br>
+<br>
+question text[, title]<br>
+<br>
+Will show a simple Yes/No dialog with the given text (Yes/No will be localized by Windows). The condition's true if "Yes" was chosen.<br>
+<br>
+screen landscape|portrait|vga|qvga<br>
+<br>
+Checks whether the display is in the given mode.<br>
+Be aware "screen vga" will be true if a VGA display is used, no matter if "double resolution" (WM2003 SE default) or "real VGA" (SE_VGA, OzVGA, ...) is used.<br>
+<br>
+<font color=red> RegKeyExists </font> root, key, value name<br>
+<br>
+Is true if the given registry key exists. Parameters are like those of <font color=red> RegDelete </font>.<br>
+<br>
+regKeyEqualsDWord root, key, value name, value<br>
+regKeyEqualsString root, key, value name, value<br>
+<br>
+Is true if the given registry key contains the given value.<br>
+<br>
+Each condition can be negated with the prefix "not".<br>
+E.g. "If not screen landscape" will be the same as "If screen portrait", and "If not fileExists \Windows\some.dll" will be true if the given file doesn't exist.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME=""></A>10.3 Old commands<br>
+<br>
+Input( variable, numeric, message [, title ] )<br>
+Like "Input", result is saved in given variable instead of being returned<br>
+<br>
+SubStr( string, Start, length, variable )<br>
+Like "SubStr", result is saved in given variable instead of being returned<br>
+<br>
+GetPart( string, separator, trim, index, variable )<br>
+Like "Part", result is saved in given variable instead of being returned<br>
+<br>
+Find( string, search string, variable )<br>
+Like "Find", result is saved in given variable instead of being returned<br>
+<br>
+ReverseFind( string, character, variable )<br>
+Like "ReverseFind", result is saved in given variable instead of being returned<br>
+<br>
+Get<font color=blue> RGB </font>( red, green, blue, variable )<br>
+Like "RGB", result is saved in given variable instead of being returned<br>
+<br>
+MakeUpper( variable )<br>
+MakeLower( variable )<br>
+Similar to "ToLower" resp. "ToUpper", modifies the contents of the given variable<br>
+<br>
+Eval( variable, expression as string )<br>
+Like "Eval", result is saved in given variable instead of being returned<br>
+<br>
+Get<font color=blue> ColorAt </font>( x, y, variable )<br>
+Like "ColorAt", result is saved in given variable instead of being returned<br>
+<br>
+GetWindowText( x, y, variable )<br>
+Like "WindowText", result is saved in given variable instead of being returned<br>
+<br>
+GetClipText( variable )<br>
+Like "ClipText", result is saved in given variable instead of being returned<br>
+<br>
+Get<font color=blue>ActiveProcess</font>( variable )<br>
+Like "ActiveProcess", result is saved in given variable instead of being returned<br>
+<br>
+GetTime( variable )<br>
+Like "TimeStamp", result is saved in given variable instead of being returned<br>
+<br>
+GetTime( format, variable )<br>
+Like "FormatTime" without timestamp, result is saved in given variable instead of being returned<br>
+<br>
+GetActiveWindow( variable )<br>
+Like "ActiveWindow", result is saved in given variable instead of being returned<br>
+<br>
+IniRead( file, section, entry, variable )<br>
+Like "IniRead", result is saved in given variable instead of being returned<br>
+<br>
+ReadFile( file, variable )<br>
+Like "ReadFile", result is saved in given variable instead of being returned<br>
+<br>
+Get<font color=blue>SystemPath</font>( path type, variable )<br>
+Like "SystemPath", result is saved in given variable instead of being returned<br>
+<br>
+GetjScriptsType( variable )<br>
+Like "jScriptsType", result is saved in given variable instead of being returned<br>
+<br>
+RegReadString( root, key, value name, variable )<br>
+RegReadDWord( root, key, value name, variable )<br>
+RegReadBinary( root, key, value name, variable )<br>
+Similar to "RegRead", data type in the registry must be given, result is saved in given variable instead of being returned<br>
+<br>
+11 Donations<br>
+Well, of course this program is freeware, so you don't need to pay anything.<br>
+But if you think "Wow, what a great program, I like to give him some money for his efforts", I thankfully accept that.<br>
+<br>
+Just go to www.paypal.com, register or log on, and send the money to "mort@sto-helit.de".<br>
+<br>
+You can get my bank account data by request, I don't like to publish it for everyone to see... And it's only useful if you're living in the EU.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+</body>
+</html>

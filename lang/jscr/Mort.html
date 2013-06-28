@@ -1,0 +1,267 @@
+<html>
+<head>
+<title>jScripts V4.1</title>
+</head>
+<body>
+(c) Mirko Schenk<br>
+mort@sto-helit.de<br>
+http://www.sto-helit.de<br>
+<br>
+Contents<br>
+<br>
+jScripts V4.1<br>
+<br>
+<a href="Mort1.html#1">1 What is jScripts / License</a><br>
+<br>
+<a href="Mort1.html#2">2 Functional range</a><br>
+<br>
+<a href="Mort1.html#3">3 Installation</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#3.1">3.1 Different jScripts variations</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#3.2">3.2 PC Setup</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#3.3">3.3 CAB file</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#3.4">3.4 Binaries</a><br>
+<br>
+<a href="Mort1.html#4">4 Usage</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#4.1">4.1 Create and execute scripts</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#4.2">4.2 Parameters for jScripts.exe</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#4.3">4.3 Multiple instances and aborting scripts</a><br>
+<br>
+<a href="Mort1.html#5">5 Additional tools</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#5.1">5.1 Execute scripts when a storage card is inserted or removed</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#5.2">5.2 ¡°Dummy exe¡± for scripts</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#5.3">5.3 Supporting scripts for CAB installations (setup.dll)</a><br>
+<br>
+<a href="Mort1.html#6">6 Important general informations</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.1">6.1 Glossary</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.2">6.2 Syntax style in this manual</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.3">6.3 Spaces, tabulators, and line breaks</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.4">6.4 Case sensitivity</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.5">6.5 Directories and files</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#6.6">6.6 Comments</a><br>
+<br>
+<a href="Mort1.html#7">7 Supported parameters and assignments</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.1">7.1 Expressions</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.2">7.2 Data types</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.3">7.3 Fixed strings</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.4">7.4 Fixed numbers</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.5">7.5 Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.5.1">Predefined variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.5.2">Variable scope</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.5.3">Arrays (Lists)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.5.4">References ([variable name])</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#7.6">7.6 Operators</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.6.1">List of all possible operators</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.6.2">Logical and binary operators</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.6.3">Comparisons</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#7.6.4">Concatenation of strings and paths</a><br>
+<br>
+<a href="Mort1.html#8">8 Control structures</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.1">8.1 Conditions</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.2"><b>8.2 Simple branchings (<font color=red>If</font>)</b></a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.3">8.3 Branching by values (<font color=red>Switch</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.4">8.4 Branching with selection dialog (<font color=red>Choice, ChoiceDefault</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.5">8.5 Conditional loop (<font color=red>While</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.6">8.6 Iteration over multiple values (<font color=red>ForEach</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#8.6.1">Looping over data values (<font color=red>list of expressions, array contents, splitted strings, characters of a string</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#8.6.2">Looping over INI file values (<font color=red>sections, values of a section</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#8.6.3">Looping over registry entries (<font color=red>subkeys, values of a key</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort1.html#8.6.4">Looping over files and directories</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.7">8.7 Fixed number of repeatings (<font color=red>Repeat</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.8">8.8 Simple iteration (<font color=red>For</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.9"><b>8.9 Sub routines/Function (<font color=red>Sub/Def</font>)</b></a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.10">8.10 Include Other script to main Script file (<font color=red>Include</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.11">8.11 Set return value (<font color=red>Return</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.12">8.12 Abort script (<font color=red>Exit</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.13">8.13 ++/-- More like C language</a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.14"><font color=red>8.14 New break/continue statement added(<b>break, continue</b>)</font></a><br>
+&nbsp;&nbsp;<a href="Mort1.html#8.15"><font color=red>8.15 New Reverse/FloatToHex function added(<b>ReverseStr, FloatStoreFormat</b>)</font></a><br>
+<br>
+<a href="Mort2.html#9">9 Commands and functions</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.1">9.1 Error handling (<font color=red>ErrorLevel</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.2">9.2 Variables</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.2.1">Assigning variables (<font color=red>¡±=¡± and Set</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.2.2">Expressions in a string (<font color=red>Eval</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.2.3">Remove variable or array element (<font color=red>Clear</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.2.4">Check if variable is assigned (<font color=red>IsEmpty</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.2.5">Variable scope (<font color=red>::Global VarName</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.3">9.3 String operations</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.1">Get the length of a string (<font color=red>Length</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.2">Extract a range of characters from a string (<font color=red>SubStr</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.3">Split string and return a single part (<font color=red>Part</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.4">Find a string in another string (<font color=red>Find</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.5">Find last occurrence of a character (<font color=red>ReverseFind</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.6">Replace strings (<font color=red>Replace</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.7">Convert to upper / lower case (<font color=red>ToUpper/ToLower</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.8">Parts of a filename (<font color=red>FilePath, FileBase, FileExt</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.9"><b>Regular Expression (<font color=red>RegEx ,RegExReplace</font>)</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="syntax.htm"><b>Regular Expression (<font color=red>Help</font>)</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.10">Is char In the string? (<font color=red>In</font>)</b></a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.3.11">Get a substring from source string (<font color=red>Get ,GetNoCase</font>)</b></a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.4">9.4 Math functions</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.1">Formatted output (<font color=red>Format</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.2">Conversion to/from hexadecimal (<font color=red>NumberToHex, HexToNumber</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.3">Rounding (<font color=red>Round, Floor, Ceil</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.4">Random values (<font color=red>Rand</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.5">Trigonometric functions (<font color=red>Sin, Cos, Tan</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.6">Logarithms (<font color=red>Log, Log10</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.7">Square root (<font color=red>Sqrt</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.4.8">Compare float values (<font color=red>CompareFloat</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.5">9.5 Arrays</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.5.1">Get biggest index in series (<font color=red>MaxIndex</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.5.2">Get number of elements (<font color=red>ElementCount</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.5.3">Create an array from a list of values (<font color=red>Array</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.5.4">Create an array with named indexes (<font color=red>Map</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.5.5">Spit a string to multiple variables/array elements (<font color=red>Split</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.6">9.6 Execute applications or open documents</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.1">Open application/document and continue script (<font color=red>Run</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.2">Open application/document and wait until it's finished (<font color=red>RunWait</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.3">Run Other script in Current script file (<font color=red>Include</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.4">Create new document / element (<font color=red>New</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.5">Execute application at a given time (<font color=red>RunAt</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.6">Execute application on each power on (<font color=red>RunOnPowerOn</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.6.7">Remove application from Notification Queue¡°</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.7">9.7 Application windows</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.1">Window titles ¨C how jScripts finds a window</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.2">Show and activate a window (<font color=red>Show</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.3">Minimize/hide a window (<font color=red>Minimize</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.4">Close a window / end application (<font color=red>Close</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.5">Get the title of the currently active window (<font color=red>ActiveWindow</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.6">Check whether a window is active (<font color=red>WndActive</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.7">Check whether a window exists (<font color=red>WndExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.8">Wait until a window exists (<font color=red>WaitFor</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.9">Wait until a window becomes active (<font color=red>WaitForActive</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.10">Get window title / element contents (<font color=red>WindowText</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.11">Get window position (<font color=red>GetWindowPos, WndLeft, -Right, -Top, -Bottom</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.12">Send special commands (<font color=red>SendOK, SendCancel, SendYes, SendNo</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.7.13">Send advanced commands/messages (<font color=red>SendCommand, SendMessage, PostMessage</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.8">9.8 Keystrokes</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.8.1">Sending strings (<font color=red>SendKeys</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.8.2">Sending special characters (e.g. direction keys) (<font color=red>SendSpecial</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.8.3">Copy screen contents to clipboard (<font color=red>Snapshot</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.8.4">Sending Ctrl+key (<font color=red>SendCtrlKey</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.9">9.9 Mouse clicks / tapping</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.9.1">Single click (<font color=red>MouseClick</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.9.2">Double click (<font color=red>MouseDblClick</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.9.3">Press / release the mouse button separated (<font color=red>MouseDown/MouseUp</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.10">9.10 Waiting</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.10.1">Fixed delay in milliseconds (<font color=red>Sleep</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.10.2">Wait message with countdown / condition (<font color=red>SleepMessage</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.10.3">Waiting for windows (<font color=red>WaitFor / WaitForActive</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.11">9.11 Time</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.11.1">Unix timestamp (<font color=red>TimeStamp</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.11.2">Formatted output (<font color=red>FormatTime</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.11.3">Set current time to multiple variables (<font color=red>GetTime</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.12">9.12 Copy, rename, move, and delete files</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.1">Copy a single file (<font color=red>Copy</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.2">Copy multiple files (<font color=red>XCopy</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.3">Rename or move a single file (<font color=red>Rename</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.4">Move multiple files (<font color=red>Move</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.5">Delete file(s) (<font color=red>Delete</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.6">Delete files, also in subdirectories (<font color=red>DelTree</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.12.7">Creating a shortcut/link (<font color=red>CreateShortcut</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.13">9.13 Reading and writing text files</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.13.1">Reading a text file (<font color=red>ReadFile</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.13.2">Writing to a text file (<font color=red>WriteFile</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.13.3">Reading a value of an INI file (<font color=red>IniRead</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.13.4">Writing a value to an INI file (<font color=red>IniWrite</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.13.5">Access serial ports (<font color=red>SetComInfo</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort2.html#9.14">9.14 File system informations</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.1">Check whether file or directory exists (<font color=red>FileExists/DirExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.2">Check free space (<font color=red>FreeDiskSpace</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.3">Check disk size (<font color=red>TotalDiskSpace</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.4">Get file size (<font color=red>FileSize</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.5">Get file creation time (<font color=red>FileCreateTime</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.6">Get file modification time (<font color=red>FileModifyTime</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.7">Get file attributes (<font color=red>FileAttribs</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.8">Set file attributes (<font color=red>SetFileAttribute, SetFileAttribs</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.9">Get version number (<font color=red>FileVersion / GetVersion</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort2.html#9.14.10">Get files from specify directory (<font color=red><b>DirContents</b></font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.15">9.15 Zip / Tar Gzip archives</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.1">Important hints</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.2">Compress a single file (ZipFile)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.3">Compress multiple files (ZipFiles)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.4">Extract single file (UnzipFile)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.5">Extract entire archive (UnzipAll)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.6">Extract a path of an archive (UnzipPath)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.15.7">Extract entire TGZ archive (<font color=red>TGZX</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.16">9.16 Connections</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.16.1">Establish connection (<font color=red>Connect</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.16.2">End connection (<font color=red>CloseConnection/Disconnect</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.16.3">Check connection (<font color=red>Connected/InternetConnected</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.16.4">Blue tooth function (<font color=red>GetBtState/SetBtState</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.16.5">Radio Control function (<font color=red>GetRadioMode/SetRadioMode</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.17">9.17 Internet access</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.17.1">Set proxy</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.17.2">Download (<font color=red>Download</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.17.3">Other possibilities</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.18">9.18 Directories</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.18.1">Create directory (<font color=red>MkDir</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.18.2">Remove directory (<font color=red>RmDir</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.18.3">Change directory (<font color=red>ChDir</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.18.4">Getting system paths (<font color=red>SystemPath</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.19">9.19 Registry</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.1">Reading registry entries (<font color=red>RegRead</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.2">Writing registry entries (<font color=red>RegWriteString/RegWriteDWord/ RegWriteBinary/RegWriteMultiString</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.3">Checking existence of a value (<font color=red>RegValueExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.4">Checking existence of a key (<font color=red>registry path) (RegKeyExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.5">Removing a registry value (<font color=red>RegDelete</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.19.6">Removing a registry key (<font color=red>registry path) (RegDeleteKey</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.20">9.20 Dialogs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.1">Free text input (<font color=red>Input</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.2">Message (<font color=red>Message/MsgBox</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.3">Big message with scrollbar (<font color=red>BigMessage/MsgBoxX</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.4">Message with countdown/condition (<font color=red>SleepMessage</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.5">Simple questions (<font color=red>Question</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.6">Selection from a list (<font color=red>Choice</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.7">Select directory (<font color=red>SelectDirectory</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.8">Get filename (<font color=red>SelectFile</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.9">Set entry size and font for choices (<font color=red>SetChoiceEntryFormat</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.20.10">Set font for big messages (<font color=red>SetMessageFont</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.21">9.21 Processes (<font color=red>running applications</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.1">Process handling supported (<font color=red>SupportsProcHandling</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.2">Checking existence of a process (<font color=red>ProcExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.3">Checking existence of a script process (<font color=red>ScriptProcExists</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.4">Process name of active window (<font color=red>ActiveProcess</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.5">Process name of given window (<font color=red>WindowProcess</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.6">End a running process (<font color=red>Kill</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.21.7">End a running script (<font color=red>KillScript</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.22">9.22 Signals</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.22.1">Modifying the system volume (<font color=red>SetVolume</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.22.2">Play a WAV file (<font color=red>PlaySound</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.22.3">Vibrate (<font color=red>Vibrate</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.23">9.23 Display / screen</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.1">Get the color at a screen position (<font color=red>ColorAt</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.2">Create the color code from RGB values (<font color=red>RGB</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.3">Get the red/green/blue part of a color code (<font color=red>Red, Green, Blue</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.4">Rotate the screen (<font color=red>Rotate</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.5">Set backlight intensity (<font color=red>SetBacklight</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.6">Toggle display on/off (<font color=red>ToggleDisplay</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.7">Get screen size (<font color=red>ScreenWidth, ScreenHeight</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.8">Check screen informations (<font color=red>orientation/resolution) (Screen</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.9">Redraw today screen (<font color=red>RedrawToday</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.23.10">Show/hide wait cursor (<font color=red>ShowWaitCursor/HideWaitCursor</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.24">9.24 Clipboard</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.24.1">Copy text to the clipboard (<font color=red>SetClipText</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.24.2">Get text from the clipboard (<font color=red>ClipText</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.25">9.25 Memory</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.25.1">Available main memory (<font color=red>FreeMemory</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.25.2">Size of the main memory (<font color=red>TotalMemory</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.26">9.26 Energy</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.26.1">Check if externally powered (<font color=red>ExternalPowered</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.26.2">Current battery level (<font color=red>BatteryPercentage, BackupBatteryPercentage</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.26.3">Turn off device (<font color=red>PowerOff</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.26.4">Avoid automatic power off (<font color=red>IdleTimerReset</font>)</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#9.27">9.27 System</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.27.1">Get the system version (<font color=red>SystemVersion</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.27.2">Get the current jScripts variant (<font color=red>jScriptsType</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.27.3">Get the current jScripts version (<font color=red>jScriptsVersion, GetjScriptsVersion</font>)</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="Mort3.html#9.27.4">Restart device (<font color=red>Reset</font>)</a><br>
+<br>
+<a href="Mort3.html#10">10 Old syntax and commands</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#10.1">10.1 Old syntax</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#10.2">10.2 Old conditions</a><br>
+&nbsp;&nbsp;<a href="Mort3.html#10.3">10.3 Old commands</a><br>
+<br>
+<a href="Mort3.html#11">11 Donations</a><br>
+</body>
+</html>

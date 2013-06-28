@@ -1,0 +1,906 @@
+<html>
+<head>
+<title>Manual for jScripts 4.1</title>
+</head>
+<body>
+Manual for jScripts 4.1<br>
+<br>
+<A NAME="1"></A>1 What is jScripts / License<br>
+<br>
+jScripts is "just" an interpreter (similar to the runtime environment of Visual Basic), so there's no visible program that can be run for itself. (Except for the registration of file extensions when you run jScripts.exe, but that's unnecessary if you used an installer 每 also see 3 Installation) The script language is focused on batch control, i.e. to run other applications and remote control them, and to do basic system operations, like file operations, registry modifications, and such. Due to this, only basic dialogs are available.<br>
+You have to use downloaded .mscr or .jscr script files, or write them yourself with any text editor (see 4.1 Create and execute scripts). For beginners, writing own scripts might be a bit complicated.<br>
+You can execute those scripts by running them like any other application in the file explorer (i.e., just tap the file), or create a shortcut to those files in your start menu (\Windows\Start menu, or some localization) with the file explorer (or any other tool).<br>
+I don't grant any warranty for damages caused by this program (neither me nor the script authors are perfect...). Be aware that foreign scripts can do lots of dangerous things, just like any "normal" application can read or delete files, or send data via the internet.<br>
+jScripts is freeware, i.e., you don't need to pay for it, but I'd be glad about a small (or big ;)) donation as "thank you!". See also 11 Donations.<br>
+The source is available on request (SubVersion repository), but unlike e.g. GPL, you're not allowed to create your own derivate 每 that's to avoid a "For that script, you've got to use the XxxScript interpreter from Yyy" confusion.<br>
+You may deploy jScripts with your own scripts, even for commercial scripts (be aware they will be available in source code since there's no compiled code...). But you have to note at a sensible location (readme.txt, setup, or similar) that jScripts is a foreign product with its own license. A link to my web site or mentioning my name would be good manner (e.g. jScripts is freeware, www.sto-helit.de").<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="2"></A>2 Functional range<br>
+<br>
+jScripts supports among others.:<br>
+<br>
+♂ Run, activate, hide, and close applications<br>
+♂ Wait functions: certain timespan, wait for existence or activation of windows<br>
+♂ Send keystrokes and mouse clicks to windows<br>
+♂ Copy, rename, move, delete files, create shortcuts<br>
+♂ Create and remove directories<br>
+♂ Supports ZIP archives (no overwriting of contained files!)<br>
+♂ Read and write text files<br>
+♂ Read and modify the registry<br>
+♂ Internet: Reading text files, downloads, create and close connections<br>
+♂ If conditions, Choice selections and For-, ForEach, While or Repeat loops<br>
+♂ Some system features (e.g. rotation, volume, backlight brightness, soft reset)<br>
+♂ Sub functions, local variables, multi level arrays, ...<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="3"></A>3 Installation<br>
+<br>
+<A NAME="3.1">3.1 Different jScripts variations<br>
+<br>
+jScripts is available for PCs, PocketPCs, Smartphones (with Windows Mobile) and PNAs (Navigation systems based on Windows Mobile). The functional range variates depending on the possibilities of the devices. If a function doesn't exist for a certain variation, it's noted in its description in this manual. It's also possible to check which jScripts variation is used (see 9.27.2 Get the current jScripts variant (jScriptsType)).<br>
+The installation downloads contain all variations. You have to select the one that fits your system. <br>
+The system is abbreviated this way:<br>
+PC = PC (Windows XP/Vista)<br>
+PPC = PocketPC<br>
+SP = Smartphone<br>
+PNA = Navigation device<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="3.2">3.2 PC Setup<br>
+<br>
+Just execute the jScripts-4.1-system.exe (e.g. jScripts-4.1-PPC.exe) from the "exe" directory in the archive on your desktop PC and follow the directives...<br>
+Currently, there's no setup for the PC variation, please see "Binaries" for that...<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="3.3">3.3 CAB file
+<br>
+<br>
+This installation type is only available for Windows Mobile, so there isn't a CAB file for the PC version.<br>
+Copy jScripts-4.0-system.cab from the "cab" directory in the archive to the target device (use "Browse" in ActiveSync or use a storage card) and open it with the file explorer of the device (or any alternative file manager, like TotalCommander, Resco Explorer, and such).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="3.4">3.4 Binaries
+<br>
+Copy the contained files from the archive's subdirectory of "bin" that's named after the desired device type (e.g. "bin/PPC") to any place on the device (e.g. to "\Program files\jScripts"). Then run jScripts.exe there, so the required registry entries will be created (for the assignments to the script extensions .mscr and .jscr).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="4"></A>4 Usage
+<br>
+<br>
+<A NAME="4.1"></A>4.1 Create and execute scripts<br>
+<br>
+jScripts executes files with the extensions ".mscr" and ".jscr".<br>
+The latter is for backward compatibility, the program formerly was named "MortRunner".<br>
+Such a file can be created with any text editor. You can even use PocketWord, but you have to use "Save as - Text" and rename the extension from .txt in .mscr or .jscr afterwards. If your editor supports multiple formats, please use "ANSI". Since V4.1, it's also possible to use Unicode files with proper prefixes (see 9.13.1 Reading a text file (ReadFile)) but ANSI is still recommended for backward compatiblity.<br>
+If this file is opened 每 e.g. by tapping it in the file explorer 每 the lines in this file will be executed sequentially - just like a batch file.<br>
+You can create a link to the file you created in the start menu or autostart folder. You can do this in the file explorer by "copying" the file, and "pasting a shortcut" in "\Windows\Start Menu" or "\Windows\StartUp" (might be localized on your device).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="4.2"></A>4.2 Parameters for jScripts.exe<br>
+<br>
+The parameter for jScripts.exe is the script file that should be executed, with the entire path. If it contains spaces, this argument must be surrounded by quotes (e.g. "Storage Card\myscript.mscr").<br>
+The PPC variation has an additional optional parameter /wait=n, whereby n is the number of seconds, which jScripts will wait for the existence of the given script file. This option is available, because the storage cards aren't available directly after resuming from standby. So if you assigned a script to an application button, and wake up the device with it, it might happen the script can't be opened. By default, jScripts will wait for 5 seconds.<br>
+Additionally, all parameters in the format "name=value" are set as variables to use in the script.For example, if "test="This is a test"" is given as parameters, "Message( test )" in the script would show "This is a test".<br>
+The variables are local values, so if you use global variables, you might need to <font color=red>::</font>variable name. Also see 7.5.2 Variable scope.<br>
+<br>
+If Parameter start with "/c" or "/C", that means follow the /c is script code. for example:<br>
+a short cut link's content is below:<br>
+<font color=red>#"\windows\jscripts.exe" /c msgbox("Hello, jScripts!")</font><br>
+<br>
+will execute the source code after param /c, At this example will show a message box, it's content is <font color=red>Hello,jScripts</font><br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="4.3"></A>4.3 Multiple instances and aborting scripts<br>
+<br>
+jScripts can run in multiple instances, but only once for each script.<br>
+If an already running script is run a second time, an open dialog of that script (e.g. Choice, Message, ...) will be activated. If the script doesn't show any windows, nothing will happen.<br>
+If you want to terminate running scripts, you can use ScriptProcExists and KillScript. See also informations in 9.21.7 End a running script (KillScript).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="5"></A>5 Additional tools<br>
+<br>
+<A NAME="5.1">5.1 Execute scripts when a storage card is inserted or removed Autorun.exe allows you to use Windows Mobile's autorun feature in a quite easy way.<br>
+<br>
+If a storage card is inserted or removed, Windows executes the program "autorun.exe" in the folder "2577" (CE code for ARM processors) or "0" on that storage card (e.g. "\Storage\2577\autorun.exe").<br>
+This feature isn't supported on all devices. For example, I've read that HP deactivated this feature on iPAQ 2210. It also doesn't work on PNAs and PCs, these autorun.exe versions are only for use as "dummy exe" (see below).<br>
+If you copy autorun.exe, jScripts.exe as well as autorun.mscr and/or autoexit.mscr to this folder, the scripts autorun.mscr (after inserting) and autoexit.mscr (after removing) will be executed (if the corresponding script exists).<br>
+For backward compatibility, you can also use autorun.jscr and autoexit.jscr. If both .mscr and .jscr do exist, the .mscr is used.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="5.2">5.2 "Dummy exe" for scripts<br>
+<br>
+If you rename autorun.exe, it will execute the fitting script. I.e., if autorun.exe is renamed e.g. to myscript.exe, it will execute myscript.mscr, or, if it doesn't exist, myscript.jscr.<br>
+The renamed autorun.exe and script must be located in the same directory.<br>
+If a jScripts.exe is located in the same directory, too, it will be used to execute the script, otherwise the default assignment is used (i.e. the installed jScripts 每 or you'll get an error message if there's no installation...).<br>
+This feature is handy for programs which can run other programs but not do not allow to select .mscr files, like some phone profile tools for the PhoneEdition devices.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="5.3">5.3 Supporting scripts for CAB installations (setup.dll)<br>
+<br>
+setup.dll is only available for PocketPCs. It allows to execute scripts automatically after installation or before deinstallation when a CAB installation is used. This way, it saves developers to create an own setup DLL. If CAB files are a closed book to you, just skip this chapter... ;-)<br>
+<br>
+To activate the setup.dll, it must be set as setup DLL of the CAB file. If you're using the CAB wizard from Microsoft, this is done with CESetupDLL = "setup.dll" in the .inf file, other tools should offer a menu entry or option for it.<br>
+<br>
+jScripts.exe and 每 if you use ZIP archives 每 mortzip.dll must be installed to the default installation directory (%InstallDir%) by the CAB installation. Same goes for install.mscr (executed after installation) and uninstall.mscr (executed before deinstallation), whereby those two can be omitted. But of course that only makes sense for one of them, cause otherwise the setup.dll wouldn't do anything...<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6"></A>6 Important general informations<br>
+<br>
+<A NAME="6.1"></A>6.1 Glossary<br>
+<br>
+Constant:<br>
+Variable:<br>
+<br>
+A fixed value, i.e. numbers like "100",<font color=red> "0xFF", "1.2E-3" </font>or strings like "Test" A string that identifies an assigned value.<br>
+E.g. "x = 5" ("5" is assigned to variable "x") or "Message( x )" (The value "5", which is assigned to variable "x", will be displayed).<br>
+<br>
+Expression: A combination of variables, constants, functions (see below) and operators, which results in a single value (e.g. "5*x" or ""Script type: " .. ScriptType()")<br>
+Assignment: Setting a value to a variable, usually done with "variable name = expression"<br>
+Parameter: Expression results which are passed to commands or functions<br>
+Command: An instruction without a return value, e.g. MouseClick or Message<br>
+<br>
+Function:<br>
+<br>
+An instruction which returns a value, e.g. SubStr. It's used in expressions, so it can only be used in assignments or parameters.<br>
+<br>
+Control structure: Instructions, which modify the course of the script, like If, Choice, ...<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6.2"></A>6.2 Syntax style in this manual<br>
+<br>
+The style in this manual is loosely based on the (E)BNF:<br>
+<br>
+bold:<br>
+<br>
+Fixed value, e.g. the command or function name<br>
+<br>
+italics: Variable value, usually any expression<br>
+<br>
+[...]:<br>
+{...}:<br>
+x|y|z:<br>
+(...):<br>
+<br>
+Optional, can be omitted (usually, default values will be used in this case) Can be repeated or omitted<br>
+Either x, y, or z must be used (usually fixed values).<br>
+Grouping (usually to clarify "|" options).<br>
+<br>
+If the characters are bold, they must be entered that way, e.g. parentheses ((...)).<br>
+<br>
+Generally, this syntax is used:<br>
+Command [ ( Expression {, Expression } ) ]<br>
+or<br>
+Variable = Function( [ Expression {, Expression } ] )<br>
+whereby an single function call is just a special type of an expression. For more about expressions, <br>
+see 7 Possible parameters and assignments.<br>
+<br>
+When using one of the (few) commands, which don't require any parameters, but the parentheses after it are always needed, athorwise it's will be recognise as variable. <br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6.3"></A>6.3 Spaces, tabulators, and line breaks<br>
+<br>
+Spaces and tabulators are allowed at any location before, after, and between the single elements (i.e. around command/function names, parentheses, values, operators, ...). In quoted strings, there're part of the string, otherwise they're ignored.<br>
+Line breaks within an instruction are possible, if you put a "\" at the end of the line that should be continued. You can do this inside of strings, too. But all surrounding spaces, tabulators, and the line break itself will be replaced with a single space.<br>
+Example:<br>
+Message( "This is \<br>
+a test" )<br>
+<br>
+will show "This is a test".<br>
+Line breaks in a string must be entered as \n or ^NL^, see 7.3 Fixed strings.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6.4"></A>6.4 Case sensitivity<br>
+<br>
+Commands and file names are not case sensitive, but window titles are. But you can use only parts of the window title. I.e. Show("WORD") will not work, but Show("Word") will also activate "Pocket Word" (or the first window with "Word" in the title...)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6.5"></A>6.5 Directories and files<br>
+<br>
+Directories and file names should always be given with complete path (e.g. "\path\to\file.ext" or "\some\directory"), because Windows Mobile doesn't know a "current directory" - and on the desktop it could not be what you expected.<br>
+If no path is given, jScripts adds the directory of the currently running script 每 but only when jScripts accesses the file contents, not for system operations. I.e., ReadFile, WriteFile, ReadIni, WriteIni, ForEach with IniSections or IniKeys, and Include("SubScriptFile)will work with relative paths, but not commands like Copy, Move, Rename, all ZIP operations, and so on.<br>
+Or in short: Everything that's good to configure your script can be read from and written to the script's directory, everything else needs full paths.<br>
+Windows Mobile doesn't support "." and ".." in paths, not even something like "\some\path\..\file.txt" (which might be the result of adding the script's path, or if you use SystemPath and add something), i.e. you can't access files from a parent directory that way.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="6.6"></A>6.6 Comments<br>
+<br>
+Comments are possible by writing the character "#" or "//" at the beginning of the line. Spaces in front of the "#" or "//" are allowed.<br>
+In INI files, comments are possible with a ";" at the beginning of the line (as usual with INI files...).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7"></A>7 Supported parameters and assignments<br>
+<br>
+<A NAME="7.1"></A>7.1 Expressions<br>
+<br>
+All parameters for functions and commands, conditions for control structures, and values assigned with "=" are expressions. (Exception: Old syntax, see 10 Old syntax and commands)<br>
+<br>
+Expressions consist of the following parts:<br>
+Fixed strings in quotes, e.g. "Text"<br>
+Fixed numbers, e.g. 42,<font color=red>0xFF,1.2E10,.232</font><br>
+Variables, e.g. x, VarName<br>
+Functions, e.g. SubStr( parameter )<br>
+Operators, e.g. +, -, *, /, ..., which define, how values (constants, variable contents, function results) should be combined.<br>
+<br>
+That sounds more complicated than it is. A few examples will clarify that:<br>
+<br>
+Message( "Hallo!" )<br>
+The command "Message" is invoked with the fixed string "Hallo!" as parameter<br>
+<br>
+Sleep( 500 )<br>
+The command "Sleep" is invoked with the fixed number "500" as parameter<br>
+<br>
+Sleep( pause * 100 )<br>
+In this case, the contents of the variable "pause" is combined with the fixed number "100" by the operator "*" (multiplication).<br>
+<br>
+Message( "Battery level: " .. BatteryPercentage() .. "%" )<br>
+Concatenates the two fixed strings with the result of the function "BatteryPercentage()" and passes this value as parameter for "Message".<br>
+<br>
+message = "Battery level: " .. BatteryPercentage() .. "%"<br>
+Like above, but the result is assinged to the variable "message" instead of being a command parameter.<br>
+<br>
+If ( BatteryPercentage() > 20 )<br>
+# instructions<br>
+EndIf<br>
+An expression as condition<br>
+<br>
+More informations about how constants and variables must be written, and which operators are available, follows in the next few chapters.<br>
+The available functions are documented in 9 Commands and functions.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.2"></A>7.2 Data types<br>
+<br>
+jScripts doesn't support "typing", i.e. you can't tell variable "x" only to contain numbers while "str" only contains strings. Numbers and strings are stored differently (may long, double, string), but are automatically converted to each other when necessary. There are only some rare conditions where the current value's type is considered, like when using comparisons. but your can convert it's type by your self,(.ToInteger() .ToDouble() .ToString())<br>
+e.g.<br>
+<font color=red>
+a="10" # variable "a" is a string "10"<br>
+b=20 # varialbe "b" is a long number 20<br>
+c=a+b #so a+b will return "1020", is this not your expected? you needed to convert to by yourself.<br>
+c=a*3 #your must be a question, how about this statement! this will return "101010".<br>
+c="102010" / "10" # this one? c="20", it's equal statement replace("102010","10","")<br>
+c=a.ToInteger() + b # now c will be a long number 30<br>
+if ((a.ToInteger()+b) == 30) # this comparison will return true<br>
+if ((a+b) == 30) # this comparison will return false, because variable "a" is a string typing, so a+b will return "1020"<br>
+</font>
+<br>
+It's similar with parameters. Usually, the meaning of the parameter will decide whether it's used as 
+number or string. For example, a text output is a string, while a timespan is a number.<br>
+For conditions and "on/off" parameters, there's the following rule: If the value represents a valid number except "0", this means "condition fulfilled" resp. "on", otherwise it's "not fulfilled" / "off".I.e. expressions like 5, "10", 1=1, etc. are "true/on", while 0, "x", 2=1 are "false/off".<br>
+If a string contains a decimal point, it's converted to a float value, and, if an integer is expected, rounded. E.g. "SleepMessage( "4.5", "Waiting...", "Wait" )" will wait for 5 seconds. If a floating point value is converted to a string (e.g. for Message), it's formatted to none zero followed, but maxiam number is 6 by default. You should use the Format() function instead of the default conversion to get better results.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.3"></A>7.3 Fixed strings<br>
+<br>
+Fixed strings must be surrounded by quotes (").<br>
+To use quotes inside a quoted string, you have to double them, e.g..<br>
+<br>
+Message( "He said: \"This is a test\"" )<br>
+Will show He said: "This is a test".<br>
+<br>
+The following combinations will be replaced with special characters:<br>
+<br>
+<font color=red>^CR^ \r</font> Carriage Return<br>
+<font color=red>^LF^ \n</font> Line Feed<br>
+<font color=red>^NL^ \n\r</font> Windows-/DOS line bread in files (New line, consists of CR+LF)<br>
+<font color=red>^TAB^ \t</font> Tabulator<br>
+<br>
+In Windows, a new line in text files usually is the combination of carriage return and line feed (^CR^^LF^ = ^NL^). But sometimes there are also files in Unix style, which use only ^LF^.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.4"></A>7.4 Fixed numbers<br>
+<br>
+Numbers can simply be written as such (i.e. x = 5.4321, Sleep(20), ...).<br>
+If you want floating point operations, you must use a decimal point, like "1." instead of "1".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.5"></A>7.5 Variables<br>
+<br>
+Variables are placeholders" for a value which is assigned to them.<br>
+All parts of an expression, which are neither constants (e.g. 123 or "string"), operators (+, -, *, ...), nor functions (followed by parentheses) are interpreted as variable name.<br>
+Valid characters for variable names are the letters A-Z (no umlauts, accents, or similar!), digits, and underline ("_"). Variable names are not case sensitive, i.e. MYVARIABLE and myvariable are the same value.<br>
+A variable name mustn't start with a digit, because those digit(s) would be interpreted as a fixed number in expressions (and everything after it as operator or something invalid). So "9mod2" is the same as "9 mod 2", and not a variable!<br>
+Assigning a variable usually is done with "=", e.g.<br>
+myvar = 5 * x + y<br>
+But there also are some commands and control structures which assign variables, like GetTime or ForEach.<br>
+To use a variable in expression, you just have to write its name, like the "x" in the example above.If you use the old syntax, be aware the usage of variables was a bit more complicated back then (%...% etc.).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.5.1"></A>7.5.1 Predefined variables<br>
+<br>
+Some variables are predefined, to allow better readable instructions. Contrary to other languages, you are able to modify them, but you shouldn't do that:<br>
+<font color=red>TRUE, ON, YES</font> are initialized with 1,<br>
+<font color=red>FALSE, OFF, NO</font> are initialized with 0,<br>
+<font color=red>CANCEL</font> is initialized with 2.<br>
+<font color=red>PI</font> is initialized with 3.1415926535897932384626433832795 (羽)<br>
+<font color=red>SQRT2</font> is initialized with 1.4142135623730950488016887242097 (square root of 2)<br>
+<font color=red>PHI</font> is initialized with 1.6180339887498948482045868343656 (耳)<br>
+<font color=red>EULER</font> is initialized with 2.7182818284590452353602874713527 (e)<br>
+<br>
+<b><font color=red>$_</font></b> the last statement result.<br>
+<br>
+so: statement like below is valid!<br>
+<br>
+1+2+3*5<br>
+Msgbox(<b><font color=red>$_</font></b>) # display 18<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.5.2"></A>7.5.2 Variable scope<br>
+<br>
+<font color=red>Usually, all variables in Subroutine/Function are local, this means, if you set a variable in Sub/function, when you leave the sub/function, it's not exist outside of it. so, you want to use it outside Subroutine/Function, you need to return it, or you can use</font> <font color=Blue>::GlobalVariableName</font><font color=red> used outside Sub/Function, this is more different from Old jScripts version.</font><br>
+<br>
+Example:<br>
+<font color=blue>Sub</font> Sub1()<br>
+&nbsp;&nbsp;x = 5<br>
+&nbsp;&nbsp;Message( x ) #will show 5 (local variable x, global x is not modified. see below statement.)<br>
+&nbsp;&nbsp;Message( <font color=red><b>::</b></font>x ) #will show Test (global variable x)<br>
+&nbsp;&nbsp;<font color=red><b>::</b></font>x = "How are you?" # this is modify global variable <font color=red>x="Test"</font> to <font color=red>x="How are you?"</font><br>
+<font color=blue>EndSub</font><br>
+<br>
+<font color=blue>Sub</font> Sub2()<br>
+&nbsp;&nbsp;y="OK"<br>
+&nbsp;&nbsp;Message( y ) #will show "OK"<br>
+<font color=blue>EndSub</font><br>
+<br>
+x = "Test"<br>
+Sub1() #show 5 , "Test" and Set global variable x="How are you?"<br>
+Sub2() #show "OK"<br>
+Message( x ) #will show "How are you?", because in Sub1() &x is global variable x changed!<br>
+Message( <font color=red>$_</font> ) #will show "OK", because the Sub2() called, return it's last statement's result, and save in $_ variable.<br>
+Message( y ) #will show nothing, because there's no global variable y (only local y in the sub2, see about)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.5.3"></A>7.5.3 Arrays (Lists)<br>
+<br>
+Arrays are a special type of variables. An array consists of multiple variables which belong together, so called elements.<br>
+An element is addressed with the variable name and the so called "index" in brackets. This means, array[1] identifies the element "1" of the array "array".<br>
+It's also possible to use strings as index, e.g. colors["blue"], whereby the index, like the variable name, is not case sensitive. I.e., COLORS["BLUE"] identifies the same element as colors["blue"].<br>
+For both assignment and in expressions you can use any expression for the index. That's the main advantage of arrays, because usually the elements are accessed with a variable as index (e.g. some counter variable).<br>
+Some instructions (like Choice or Split) support array parameters. But they'll only access the elements with the indexes from 1 to the first not assigned number. Smaller indexes (<= 0), elements after a gap, or with string indexes will be ignored.<br>
+You can use additional levels by adding additional brackets, for example "colors[x][y]".<br>
+<br>
+Examples:<br>
+array[ "1" .. 1 ] = "eleven"<br>
+Message( array[ (2-1) .. "1" ] )<br>
+<br>
+list[1] = "a"<br>
+list[2] = "b"<br>
+list[5] = "f"<br>
+list["a"] = "A"<br>
+idx = Choice( "Selection", "Choose something", 0, 0, list )<br>
+Only "a" and "b" will be shown in the choice dialog.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.5.4"></A>7.5.4 References ([variable name])<br>
+<br>
+References allow you to access a variable (or array element) by an expression.<br>
+The can be viewed like some kind of mixture between seeing the variables as an unnamed array and Eval() (see 9.2.2 Expressions in a string (Eval)).<br>
+To refer to a variable, just use an expression that evaluates to a valid variable name (optionally with array element) in brackets.<br>
+For example, "["array[1]"]" will refer to the first element of "array". Of course, this doesn't make much sense in that way, because "array[1]" would be the same and faster to parse. But make it e.g. "[ arrayName .. "[" .. elem .. "]" ]", and you'll see the advantage.<br>
+You can use this almost everywhere, except for commands in the old syntax without parentheses (see 10 Old syntax and commands).<br>
+Examples:<br>
+[targetVar] = [sourceVar] * 10<br>
+Choice( "Selection", "Select:", [choiceArrayName] )<br>
+GetTime( [varHour], [varMinute], [varSecond] )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.6"></A>7.6 Operators<br>
+<br>
+<A NAME="7.6.1"></A>7.6.1 List of all possible operators<br>
+<br>
+All possible operators by priority (highest first):<br>
+<br>
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><p>()</td>
+        <td><p>Parentheses</td>
+    </tr>
+    <tr>
+        <td><p><font color=red>++ --</font></td>
+        <td><p><font color=red>Self operator like C ++ --</font></td>
+    </tr>
+    <tr>
+        <td><p>+ -</td>
+        <td><p>Sign</td>
+    </tr>
+    <tr>
+        <td><p>NOT/! ~</td>
+        <td><p>Negation Bit Reverse</td>
+    </tr>
+    <tr>
+        <td><p>**</td>
+        <td><p>Power</td>
+    </tr>
+    <tr>
+        <td><p>* / %</td>
+        <td><p>Multiplication, division, modulo (remainder of divisions)</td>
+    </tr>
+    <tr>
+        <td><p>+ -</td>
+        <td><p>Addition subtraction</td>
+    </tr>
+    <tr>
+        <td><p>&lt;&lt; &gt;&gt;</td>
+        <td><p>Shift Left/Right</td>
+    </tr>
+    <tr>
+        <td><p><font color=blue>\ +</font></td>
+        <td><p><font color=red>Concatenation of strings(Original <b>&</b> is not used for concatenation)</font></td>
+    </tr>
+    <tr>
+        <td><p><font color=blue>.ToInteger() .ToChar() .ToDouble()<br> .ToString() .GetLength() .GetType()<br>.ToUpcase() .ToLowcase()</font></td>
+        <td><p><font color=red>Convert var's type to integer/char/double/string and Get string Length,Get Variable's Type, Convert string to Upper case or Lower case</font></td>
+    </tr>
+    <tr>
+        <td><p>XOR/^ OR/| AND/&amp;</td>
+        <td><p>XOR OR And(Binary)</td>
+    </tr>
+    <tr>
+        <td><p>&gt; &gt;= &lt; &lt;= == = &lt;&gt; !=</td>
+        <td><p>Comparisons (Numerical or Alphanumerical)</td>
+    </tr>
+    <tr>
+        <td><p>gt ge lt le eq ne</td>
+        <td><p>Alphanumerical comparisons</td>
+    </tr>
+    <tr>
+        <td><p>?:</td>
+        <td><p>Condition Expression</td>
+    </tr>
+    <tr>
+        <td><p>And/&amp;&amp;</td>
+        <td><p>logical AND</td>
+    </tr>
+    <tr>
+        <td><p>||</td>
+        <td><p>logical OR</td>
+    </tr>
+</table>
+<br>
+eg. <br>
+a="abc"<br>
+if (a=="abc")<br>
+&nbsp;&nbsp;print "a is abc"<br>
+else<br>
+&nbsp;&nbsp;print "a is not abc"<br>
+endif<br>
+<br>
+a="10"<br>
+b=a<font color=red>.ToDouble()</font> + 10 <i><font color=gray># b = 20.0</font></i><br>
+c=20<br>
+d=a+b.f <i><font color=gray># d= 1020.0(d's type is string)</font></i><br>
+d=a.l+b <i><font color=gray># d= 30.0(d's type double/float)</font></i><br>
+<br>
+<b>Specially for String</b><br>
+<font color=red>String can <b>+ - * /</b></font><br><br>
+"Wolf"+"&"+"Lion"+"Software" => "Wolf&Lion Software"<br>
+"Wolf&<font color=red>Lion</font>" - "Lion" =>"Wolf&"<br>
+"Wolf"*2 = 2*"Wolf" =>"WolfWolf"<br>
+"Wolf&<font color=red>Lion</font> Software <font color=red>Lion</font>'s Presents." / "Lion" =>"Wolf& Software 's Presents."<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.6.2"></A>7.6.2 Logical and binary operators<br>
+<br>
+For logical operations (true or false, i.e. &&, || and NOT) there's the following rule: If the value represents a valid number except "0", this means "condition fulfilled" resp. "on", otherwise it's "not fulfilled" / "off".<br>
+I.e. expressions like 5, "10", 1=1, etc. are "true/on", while 0, "x", 2=1 are "false/off".<br>
+NOT 5" would return 0" (something not 0 = true will become false = 0), NOT (2-2)" will be 1" (2-2 = 0 = false becomes true = 1).<br>
+<br>
+The difference between AND and && resp. OR and || is that for && and || every value which isn't 0 is handled like 1 (because 2 is as "true" as 1). If you use those operators only to combine the results of comparisons or check functions, there'll be no difference, because they'll only return 1 (true) and 0 (false) anyway.<br>
+<br>
+The binary operators AND and OR additionally are useful for are bitwise checks, e.g. "(x AND 4) = 4" will check whether the 3rd bit (4 = binary 100), is set in the value of variable "x".<br>
+<br>
+The logical operators && and || are primarily thought for "C hackers", which are used that 1 AND 2 is not 0 (binary 01 AND 10 would result in 0) but 1 = "true".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.6.3"></A>7.6.3 Comparisons<br>
+<br>
+Numerical and alphanumerical comparisons have the same priority, they've been split in the operator list only for better overview.<br>
+<br>
+Since jScripts doesn't support typing, the operator has to decide whether the values are compared as numbers or as strings. This means, "123" < "20" is "false" (because 20 is smaller than 123), but 123 lt 20 is "true" (because the character "1" is smaller than "2", just like "a" is smaller than "b").<br>
+<br>
+<font color=red>Actually <b>== != < > <= >=</b> can use in string comparison.</font><br> it's only depend on the value. one of two value is string the comparison is use string comparison, otherwise, comparison in numerical.<br>
+<br>
+If you can't memorize the alphanumerical operators: they're just the abbreviations of greater than", greater/equal", less than", "(not) equals", etc.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="7.6.4"></A>7.6.4 Concatenation of strings and paths<br>
+<br>
+"\" is an operator for the concatenation of paths. There'll be only one "\" at the concatenation point.<br>
+In opposition to this, ".." simply concatenates the strings, which might result in invalid paths.<br>
+<br>
+Example:<br>
+"\My documents\" \ "\file.txt"<br>
+"\My documents" \ "file.txt"<br>
+"\My documents\" \ "file.txt"<br>
+will all result in "\My documents\file.txt".<br>
+<br>
+Compared to this:<br>
+"\My documents\" .. "\file.txt"<br>
+"\My documents\\file.txt"<br>
+"\My documents" .. "file.txt"<br>
+"\My documentsfile.txt"<br>
+"\My documents\" .. "file.txt"<br>
+"\My documents\file.txt" 每 the only valid file name!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8"></A>8 Control structures<br>
+<br>
+<A NAME="8.1"></A>8.1 Conditions<br>
+<br>
+As condition, any expression in parentheses can be used. The condition is fulfilled, if its result (if necessary, after converting to a number) is not 0 (zero, also predefined as variables FALSE and NO).<br>
+Possible functions are listed in the fitting category of "9 Commands and functions". Read also the chapter 7, esp. 7.2 Data types for further informations.<br>
+<br>
+Examples:<br>
+If ( wndExists( "Word" ) )<br>
+<font color=red>End</font> [EndIf]<br>
+<br>
+While ( x <> 5 )<br>
+<font color=red>End</font> [EndWhile]<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.2"></A>8.2 Simple branchings (If)<br>
+<br>
+If( expression )[then]<br>
+{ instructions }<br>
+{ ElseIf( expression )[then]<br>
+{ instructions } }<br>
+[ Else<br>
+{ instructions } ]<br>
+<font color=red>End</font> [EndIf]<br>
+<br>
+<font color=red><b>If</b> (expression) <font color=green>statement</font> [<b>ElseIf</b> (expression) <font color=green>statement</font> [<b>Else</b> <font color=green>statement</font>]]</font><br>
+<br>
+Executes the lines between If and Else or EndIf, if the condition is fulfilled, or the lines between Else and EndIf (if Else exists), if it's not.<br>
+If ElseIf is used, only the lines between the first true condition (including the initial If) and the upcoming ElseIf, Else resp. EndIf are executed. Only if no condition is fulfilled, the Else block is executed (if it exists).<br>
+If, Else, ElseIf, and EndIf each must be in a separate line.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.3"></A>8.3 Branching by values (Switch)<br>
+<br>
+Switch( expression )<br>
+Case <font color=red>[(]</font> value {, value } <font color=red>[)]</font><br>
+{ instructions }<br>
+ &nbsp;<font color=red>break</font><br>
+<b>{</b> Case <font color=red>[(]</font> value {, value } <font color=red>[)]</font><br>
+{ instructions }<br>
+ &nbsp;<font color=red>break</font>  <b>}</b><br>
+<font color=red><b>[</b> Default<br>
+{ instructions }<b>]</b></font><br>
+<font color=red>End</font> [EndSwitch]<br>
+<br>
+Depending on the result of the expression, the blocks which have listed the value in the "Case" line are executed.<br>
+The values can appear in multiple case blocks (e.g. Case( 1, 2 )" and Case( 2, 3 )"). The "fitting" Blocks will then be executed in the order of appearance.<br>
+"Slipping through" or "break" like in C is not possible, but similar things can be done much more clearly arranged by using a value in multiple "Case"s.<br>
+You can use different value types for each value, the switch expression's result will be converted to the value's type for comparison.<br>
+However, floating point values are a bit difficult for two reasons: 1st, there could be rounding troubles. Two seemingly identical values might differ somewhere after e.g. 15 decimals. 2nd, if you enter something like "Case( 2 )", it will be valid for 1.5 and 2.4, too, because 2 is an integer and thus the result is converted and rounded. You'd need to use "Case( 2. )" for float comparisons.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.4"></A>8.4 Branching with selection dialog (Choice, ChoiceDefault)<br>
+<br>
+( Choice( title, hint, value, value {, value } )<br>
+| Choice( title, hint, array )<br>
+| ChoiceDefault( title, hint, default, timeout, value, value<br>
+{, value } )<br>
+| ChoiceDefault( title, hint, default, timeout, array )<br>
+)<br>
+Case( value {, value } )<br>
+{ instructions }<br>
+{ Case( value {, value } )<br>
+{ instructions } }<br>
+<font color=red>{ Default } <br>
+{ instructions }</font><br>
+<font color=red>End</font> [EndChoice]<br>
+<br>
+Shows a selection with the given values. At "Case", you have to use the number of the entry (starting with 1). Pressing "Cancel" or no selection will return 0.<br>
+Apart from that, it works similar to "Switch".<br>
+In theory, you could also use Switch( Choice( ... ) ) (Choice as function, see 9.20.6 Selection from a list (Choice)), but Choice as control structure looks better.<br>
+ChoiceDefault is a variation which enables to set a default selection and a timeout after which the selected entry is used. If the user selects another entry, the countdown will be restarted.<br>
+The default value must be given as index (i.e. "2" for the 2nd entry).<br>
+0 is allowed for no default (i.e. "Cancel" if the user doesn't select an entry).<br>
+The timeout is given in seconds. With 0, no timeout will be used.<br>
+<br>
+Example:<br>
+Choice( "Test","Select a number","One","Two","Three" )<br>
+Case( 1 )<br>
+Message( "One" )<br>
+Case( 2, 3 )<br>
+Message( "Two or three" )<br>
+Case( 3 )<br>
+Message( "Three" )<br>
+Case( 0 )<br>
+Message( "Cancel" )<br>
+Exit<br>
+<font color=red>End</font> [EndChoice]<br>
+<br>
+See also 9.20.9 Set entry size and font for choices (SetChoiceEntryFormat)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.5"></A>8.5 Conditional loop (While)<br>
+<br>
+While( condition )<br>
+{ instructions }<br>
+<font color=red>End</font> [EndWhile]<br>
+<br>
+Executes the lines between While and EndWhile as long as the condition is fulfulled.<br>
+While and EndWhile must be in separate lines.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.6"></A>8.6 Iteration over multiple values (ForEach)<br>
+<br>
+ForEach variable{, variable } in type ( parameter {, parameter } )<br>
+{ instructions }<br>
+<font color=red>End</font> [EndForEach]<br>
+<br>
+This is quite a mighty tool. The given variable(s) is/are set to the values defined by the type and parameters in each iteration. This varies from simple value lists (type "values") to keys and values of sections in INI files ("iniKeys").<br>
+<br>
+Please note: If an array element is used as iterator variable, its index will only be parsed when the loop is entered. This means if "i" is 1 when the ForEach loop is entered, "array[i]" will assign "array[1]" in every iteration, no matter whether "i" is assigned another value in the loop block!<br>
+Same goes for the parameters: They're evaluated when the loop is entered.<br>
+<br>
+If not told otherwise, you can use expressions for all parameters, just like with almost every other commands.<br>
+<br>
+Currently, there are the following variations:<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.6.1"></A>8.6.1 Looping over data values (list of expressions, array contents, splitted strings, characters of a string)<br>
+<br>
+ForEach variable in <font color=red>values</font> ( value {, value } )<br>
+<br>
+Assigns each of the given values to the variable in each iteration.<br>
+<br>
+ForEach variable in <font color=red>array</font> ( array variable )<br>
+<br>
+Assigns the element values of the array to the variable. Only elements from 1 to the first number that isn't assigned as index are regarded. Lower values, alphanumerical indexes, and values after a gap are ignored.<br>
+<br>
+ForEach key, value in <font color=red>array</font> ( array variable )<br>
+<br>
+This loops over all elements in the array, setting the index to the first variable and the value to the second.<br>
+<br>
+ForEach variable in <font color=red>split</font> ( string, separator, trim )<br>
+<br>
+Similar to the Split function (see 9.5.3 Split a string to multiple variables/array elements (Split)), but the single parts are assigned to the variable one after the other.<br>
+<br>
+ForEach variable in <font color=red>charsOf</font> ( string )<br>
+<br>
+Assigns the variable each character of the string one after the other. Since jScripts automatically converts types, this also works for numbers 每 it'll assign e.g. "4" and "2" (for 42).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.6.2"></A>8.6.2 Looping over INI file values (sections, values of a section)<br>
+<br>
+ForEach variable in <font color=red>iniSections</font> ( file name )<br>
+<br>
+Returns the single sections ("[Section]", without brackets) of the given INI file.<br>
+<br>
+ForEach key, value in <font color=red>iniKeys</font> ( file name, section )<br>
+<br>
+Assigns the contents of a section in an INI file to the given variables.<br>
+Key" is the name of the variable that will receive the entry name in front of the "=", value" is the variable that receives the value after it.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.6.3"></A>8.6.3 Looping over registry entries (subkeys, values of a key)<br>
+<br>
+ForEach variable in <font color=red>regSubkeys</font> ( root, key )<br>
+<br>
+Returns all subkeys of the given key. See 9.19.1 Reading registry entries (RegRead) for parameters.<br>
+<br>
+ForEach value, data in <font color=red>regValues</font> ( root, key )<br>
+<br>
+Assigns the values of registry key to the given variables.value" is the name of the variable that will receive the value's name, data will receive its current data. Read 9.19.1 Reading registry entries (RegRead) for more informations.<br>
+This loop will not return the key's default value (usually shown as "(Default)" or "@" in registry editors).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.6.4"></A>8.6.4 Looping over files and directories<br>
+<br>
+ForEach variable in <font color=red>files</font> ( search expression )<br>
+ForEach variable in <font color=red>directories</font> ( search expression )<br>
+<br>
+Assigns the found files resp. directories to the variable.<br>
+The expression must consist of a path and a filename expression with jokers, e.g.<br>
+"\Program Files\Mort*" or "\Program Files\Test\*.exe".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.7"></A>8.7 Fixed number of repeatings (Repeat)<br>
+<br>
+Repeat ( count )<br>
+{ instructions }<br>
+<font color=red>End</font> [EndRepeat]<br>
+<br>
+Repeats the commands between those two commands count times.<br>
+Count must be at least 1.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.8"></A>8.8 Simple iteration (For)<br>
+<br>
+For variable = start to End [ step step ]<br>
+<font color=green>or</font><br>
+<font color=red>For variable = start,end,step</font><br>
+{ instructions }<br>
+<font color=red>End</font> [Next] <br>
+<br>
+In the first iteration, variable is set to start, then it's increased (or decreased, if step is negative) by step in every further iteration, until end is exceeded (variable's value bigger than end if step is positive, smaller if step is negative).<br>
+If step is omitted, it's 1 if end is bigger than start or -1 if end is smaller than start.<br>
+This works with both integers and float values. For float values, a precision of 6 digits is used for the end value comparison (see 9.4.8 Compare float values (CompareFloat), too).<br>
+Please note that any expressions (for start, end, or step) are only evaluated at the first iteration. For example, if you use a variable for end or step ("For i = 1 to end step x"), and modify this variable during the iteration, the given variable ("i") will still be increased and checked against the values the variables had before "For".<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.9"></A>8.9 Sub routines (Sub/Def)<br>
+<br>
+<b>Sub</b> subroutine_name/function_name(param1,param2..)<br>
+{ instructions }<br>
+if Function need <b>Return</b> something can use "Return expr" otherwise will <b>return last statement result.</b><br>
+<b><font color=red>End</font> [EndSub]</b><br>
+or<br>
+<b><font color=red>Def</font></b> subroutine_name/function_name(param1,param2..)<br>
+{ instructions }<br>
+if Function need <b>Return</b> something can use "Return expr" otherwise will <b>return last statement result.</b><br>
+<b><font color=red>End</font></b><br>
+<br>
+eg.<br>
+<b>Def</b> fact(n)<br>
+&nbsp;&nbsp;if (n==1) 1 else n*fact(n-1)<br>
+<b>End</b><br>
+<br>
+<font color=red><b>Call SubRountine</b></font><br>
+subroutine_name(parameter,..)<br>
+<br>
+eg.<br>
+<font color=red>fact(5)</font><br>
+#<font color=red>$_</font> is <font color=red>120</font><br>
+<br>
+<font color=red><b>Call Function</b></font><br>
+<br>
+result_variable = function_name(parameter,..)<br>
+<br>
+eg.<br>
+<font color=red>result = fact(10)</font><br>
+#<font color=red>result</font> is <font color=red>120</font><br>
+<br>
+<font color=red><b><i>Call/CallFunction is not used anymore.</i></b></font><br>
+<br>
+<b>For Example:</b><br>
+<br>
+<b>Def</b> SayHello(words)<br>
+&nbsp;&nbsp;<b>If</b> (words=="") [<b>Then</b>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;words = "World"<br>
+&nbsp;&nbsp;<b>End</b><br>
+&nbsp;&nbsp;<b>Message</b>("Hello,".Words)<br>
+<b>End</b><br>
+<br>
+Now you can call the sub like following way!<br>
+<font color=red>SayHello("World!")</font><br>
+<br>
+Below is Function<br>
+<b>Def</b> SayHello(words)<br>
+&nbsp;&nbsp;<b>If</b> (words=="") [<b>Then</b>]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;words = "World"<br>
+&nbsp;&nbsp;<b>End</b><br>
+&nbsp;&nbsp;<b><font color=red>"Hello,"..Words</font></b> #=>This statement looks strangely. it's equal the statement <font color=red><b>return</b> ("Hello,".Words)</font><br>
+<b>End</b><br>
+<br>
+Now you can invoke the Function like following way!<br>
+<font color=red><b>Say</b> = SayHello("World!")</font><br>
+MsgBox(Say)<br>
+<br>
+Of course, <br>
+MsgBox(<font color=red>SayHello("World!")</font>) #is working fine!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.10"></A>8.10 Include Other script to main script file (Include)<br>
+<br>
+Include( jScripts file )<br>
+<br>
+Include the given script to current execute script file.<br>
+There only replace the string "Include( ScriptFileName )" with the Script Content<br>
+Example:<br>
+SubScript.mscr<br>
+<br>
+A<font color=blue>=</font><font color=red>1234</font><br>
+<br>
+Main.mscr<br>
+<br>
+B<font color=blue>=</font><font color=red>5678</font><br>
+<font color=blue>Include</font>("SubScript.mscr")<br>
+<font color=red>Message</font>(A,B) <font color=gray>#Show 1234,5678</font><br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.11"></A>8.11 Set return value (Return)<br>
+<br>
+Return( value )<br>
+<br>
+Actually Return statement can be omitted.<br>
+The Sub/Def always return the last statement's result.<br>
+eg.<br>
+<br>
+<font color=red>Def</font> fact(n)<br>
+&nbsp;&nbsp;if (n==1) <font color=red>1</font> else <font color=red>n*fact(n-1)</font> #=>if (n==1) <font color=red>return 1</font> else <font color=red>return n*fact(n-1)</font><br>
+<font color=red>End</font><br>
+<br>
+Returns the given value to an invoking User Defined Function call.<br>
+<br>
+See also 8.9 Sub routines (Sub/Def)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.12"></A>8.12 Abort script (Exit)<br>
+<br>
+Exit<br>
+Stops executing the script.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="8.13"></A><font color=red>8.13 ++/-- more like C language</font><br>
+<br>
+i=10<br>
+i++ <i>#i=11</i><br>
+i-- <i>#i=10</i><br>
+a=++i <i>#i=11 a=11</i><br>
+a=i++ <i>#i=12 a=11</i><br>
+a=--i <i>#i=11 a=11</i><br>
+a=i-- <i>#i=10 a=11</i><br>
+++a=10 <i>#a=11</i><br>
+<br>
+<A NAME="8.14"></A><font color=red>8.14 Below new statement added to(<b>break, continue</b>)</font><br><br>
+<b><font color=red>break</font></b> Statement<br>
+<b><font color=red>continue</font></b> statement<br>
+<br> these statement used in loop control structure(<b><font color=red>for, while, repeat, switch</font></b>)<br>
+<br>
+eg.<br>
+for i= 1,10<br>
+&nbsp;&nbsp;if (i==<font color=red>6</font>) <font color=red><b>break</b></font><br>
+end<br>
+msgbox(i) # this will display the result of variable "i" is <font color=red>6</font><br>
+<br>
+<A NAME="8.15"></A><font color=red>8.15 Below new defined in function added to(<b>ReverseStr, FloatStoreFormat</b>)</font><br>
+<br>
+eg.<br>
+StrA = <b>ReverseStr</b>("<b>123456</b>") #StrA = "<b>654321</b>"<br>
+StrB = <b>ReverseStr</b>("<b>123456</b>",2) #StrB = "<b>56<font color =red>34</font>12</b>"<br>
+<br>
+StrC = <b>FloatStoreFormat</b>(<font color=red><b>2.5</b></font>) # StrC = "<font color=red><b>40200000</b></font>", This is the mean float number 2.5 store in memory is "40200000"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+</body>
+</html>

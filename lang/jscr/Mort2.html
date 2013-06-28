@@ -1,0 +1,1257 @@
+<html>
+<head>
+<title>Manual for jScripts 4.1</title>
+</head>
+<body>
+Manual for jScripts 4.1<br>
+<br>
+<A NAME="9"></A>9 Commands and functions<br>
+<br>
+Functions are represented by type = Function( ... ).<br>
+The type is either string, bool, int, or float, depending on the type of the return value. int and bool both mean integer numbers (no decimals), but bool functions will only return TRUE (1) and FALSE (0).<br>
+If different types might be returned, it's just value. (Usually more informations are given in the description) Of course, all functions can be used in more complex expressions than a simple ¡°variable = ...¡± assignment, too (see 7 Supported parameters and assignments).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.1"></A>9.1 Error handling (ErrorLevel)<br>
+<br>
+ErrorLevel ( error level )<br>
+<br>
+Decides which error messages will be shown. The error level has to be a string (e.g. "syntax"), i.e. <br>
+not ¡°ErrorLevel( syntax )¡± - except syntax¡° would be a variable which contains "syntax"...<br>
+The default is error¡°.<br>
+<br>
+It also might change the program flow: If the errorlevel is "warn" or "error", the program will be terminated if an error event (see list below) occurs. If the level's "off" to "syntax", the error will be ignored, so you can check it e.g. with ¡°If ( wndExists(...) )¡±.<br>
+<br>
+Possible error levels:<br>
+<br>
+off<br>
+<br>
+No error messages<br>
+The script might be terminated without any message<br>
+<br>
+critical Critical messages<br>
+currently none, reserved for future use<br>
+syntax Syntax errors<br>
+e.g. wrong parameter count or invalid command or function names<br>
+<br>
+error<br>
+<br>
+warn<br>
+<br>
+Other errors<br>
+e.g. nonexistent windows, troubles writing or deleting registry entries or files,a new document or directory couldn't be created, ...<br>
+Warnings<br>
+e.g. if a file/directory couldn't be removed, copy/move/rename didn't work (target already existing)<br>
+<br>
+The levels include all levels that are listed above, i.e. with ¡°error¡± the messages of the levels ¡°syntax¡± and ¡°critical¡± are shown, too.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.2"></A>9.2 Variables<br>
+<br>
+<A NAME="9.2.1"></A>9.2.1 Assigning variables (¡±=¡± and Set)<br>
+<br>
+Variable = expression<br>
+Set( variable, expression )<br>
+<br>
+Assigns the result of the expression to the variable.<br>
+Set() shouldn't be used anymore, better use Variable = expression.<br>
+However, Set has a little ¡°special feature¡±: If you give a variable enclosed by %...%, the contents of that variable is used as variable name. If e.g. ¡°varRef¡± contains the string "var", and %varRef% is given as variable, the xpression's  result is assigned to the variable ¡°var¡±, not ¡°varRef¡±.<br>
+If varRef¡° contains a string enclosed with ¡±%¡±, this will even work recursive, until a variable containing no %s is found (or the system crashes with a stack overflow...)<br>
+This usually is quite confusing, error prone and a bit outdated. Please use references (see 7.5.4 References ([variable name])) instead wherever possible and necessary.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.2.2"></A>9.2.2 Expressions in a string (Eval)<br>
+<br>
+value = Eval( string )<br>
+Evaluates the expression contained in the string and returns its result.<br>
+<br>
+Example:<br>
+x = Eval( "1+5*x" )<br>
+x = 26, if x was 5 before<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.2.3"></A>9.2.3 Remove variable or array element (Clear)<br>
+<br>
+Clear( variable )<br>
+<br>
+Clear will remove the variable or array element. Contrary to setting the variable or array element to an empty string, IsEmpty() will return TRUE (see below) and an array element won't be there in ForEach, Choice, etc.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.2.4"></A>9.2.4 Check if variable is assigned (IsEmpty)<br>
+<br>
+bool = IsEmpty( variable )<br>
+<br>
+Returns TRUE if the variable (or array element) wasn't assigned so far or removed with Clear(), FALSE if the variable's assigned ¨C even if it's just an empty string.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.2.5"></A>9.2.5 Variable scope (<font color=red>::</font><font color=blue>VariableName</font>)<br>
+<br>
+All Variable in Subroute or function are local. if you want to use a Global variable in subroute or function, only Add a Sign "::" before Global variable name.<br>
+for example:<br>
+var1=12.5<br>
+Demo()<br>
+<font color="blue">Sub</font> Demo()<br>
+&nbsp;&nbsp;var2=var1 &nbsp;&nbsp;&nbsp;//var2 is null, because var1 is a local variable, and it's not setted.<br>
+&nbsp;&nbsp;var2=<font color=red><b>::</b></font>var1 &nbsp;&nbsp;//Now var2 will set to float number 12.5<br>
+<font color="blue">End</font><br>
+<br>
+See 7.5.2 Variable scope for more informations.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3"></A>9.3 String operations<br>
+<br>
+<A NAME="9.3.1"></A>9.3.1 Get the length of a string (Length)<br>
+<br>
+int = Length( string )<br>
+<br>
+Returns the number of characters in a string.<br>
+<br>
+Example:<br>
+x = Length( "This is a test" )<br>
+x = 14<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.2"></A>9.3.2 Extract a range of characters from a string (SubStr)<br>
+<br>
+string = SubStr( string, start [, length ] )<br>
+<br>
+Returns length¡° characters starting with the start¡°th character.<br>
+If length is omitted, or length is bigger than the remaining characters, everything from start to the end of the string is returned.<br>
+If the string is shorter than ¡°start¡±, an empty string is returned.<br>
+You can also pass a negative value for ¡°start¡±. In this case the last characters of the string are used, i.e. -2 is the character before the last. If the value's too big (longer than the string), the first character of the string is used.<br>
+<br>
+Examples:<br>
+x = SubStr( "abcdef", 2, 3 )<br>
+x = "bcd"<br>
+<br>
+x = SubStr( "asdf", -3 )<br>
+x = "sdf"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.3"></A>9.3.3 Split string and return a single part (Part)<br>
+<br>
+string = Part( string, separator, index [, trim] )<br>
+<br>
+Splits the string on each occurrence of the separator, and returns the part with the given index (i.e., 2 for the 2nd part). You can use negative indexes, too. -1 is the last part, -2 the part before the last, and so on.<br>
+If "trim" is TRUE or omitted, any spaces surrounding the part will be removed.<br>
+See also 9.5.3 Spit a string to multiple variables/array elements (Split)<br>
+Examples:<br>
+x = Part( "a | b | c", "|", 2 )<br>
+x = "b" (2nd part, spaces trimmed)<br>
+<br>
+x = Part( "a\ b \ c.def", "\", -1, 0 )<br>
+x = " c.def" (last part, no trimming)<br>
+<br>
+x = Part( "one, two, three", ",", 4 )<br>
+x = "" (empty string for not existing parts)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.4"></A>9.3.4 Find a string in another string (Find)<br>
+<br>
+string = Find( string to check, string to search [, start ] )<br>
+<br>
+Returns the position of the first character where the searched string is found.<br>
+If a start position is given, searching starts from that position.<br>
+If the searched string is not contained, it returns 0. This should be checked, to avoid invalid functions like SubStr with a start position of 0.<br>
+Examples:<br>
+x = Find( "abcdefcd", "cd", 5 )<br>
+x = 7<br>
+<br>
+x = Find( "abcdef", "CD" )<br>
+x = 0 (case sensitive!)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.5"></A>9.3.5 Find last occurrence of a character (ReverseFind)<br>
+<br>
+int = ReverseFind( string, character )<br>
+<br>
+Returns the position of the last occurrence of ¡°character¡± in the ¡°string¡±. Unlike Find, only a single character is allowed.<br>
+If the character is not contained, the function returns 0.<br>
+Example:<br>
+x = ReverseFind( "abcba", "b" )<br>
+x = 4<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.6"></A>9.3.6 Replace strings (Replace)<br>
+<br>
+string = Replace( source, old, new )<br>
+<br>
+Replaces all occurrences of ¡°old¡± in the ¡°source¡± string with the ¡°new¡± string.<br>
+<br>
+Example:<br>
+x = Replace( "My old string", "old", "new" )<br>
+x = "My new string"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.7"></A>9.3.7 Convert to upper / lower case (ToUpper/ToLower)<br>
+<br>
+string = ToUpper( string )<br>
+string = ToLower( string )<br>
+<br>
+Returns the given string converted to upper (ToUpper) resp. lower (ToLower) case.<br>
+If a variable is passed as parameter, its content will not be modified (unlike the old commands MakeUpper/MakeLower).<br>
+Depending on your system and localization, ¡°special characters¡± like ¡°\u8221X or ¡°¨¨\u8221X will not be converted!<br>
+<br>
+Examples:<br>
+x = ToUpper( "Abcba" )<br>
+x = "ABCBA"<br>
+<br>
+x = ToLower( "AbcBA" )<br>
+x = "abcba"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.8"></A>9.3.8 Parts of a filename (FilePath, FileBase, FileExt)<br>
+<br>
+string = FilePath( file with path )<br>
+string = FileBase( file with path )<br>
+string = FileExt( file with path )<br>
+<br>
+These functions help to split a filename with path.<br>
+FilePath returns the path without the filename ("\My documents" for "\My documents\test.txt¡±)<br>
+FileBase returns the filename without path and extension ("test" for "\My documents\test.txt¡±)<br>
+FileExt returns the extension ("txt" for "\My documents\test.txt¡±)<br>
+Might be useful with 9.18.4 Getting system paths (SystemPath).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.9"></A>9.3.9 Regular Expression (RegEx ,RegExReplace) <br>
+<br>
+<b>List = RegEx( SourceStr, PatternStr, [FLAG] )</b><br><br>
+<b>SourceStr</b> is the String to match.<br>
+<b>PatternStr</b> is the Regular Pattern string<br>
+<b>FLAG</b> is the following Value(Default is <b>NO_FLAG</b>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; NO_FLAG = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp; SINGLELINE = 0x01<br>
+&nbsp;&nbsp;&nbsp;&nbsp; MULTILINE = 0x02<br>
+&nbsp;&nbsp;&nbsp;&nbsp; GLOBAL = 0x04<br>
+&nbsp;&nbsp;&nbsp;&nbsp; IGNORECASE = 0x08<br>
+&nbsp;&nbsp;&nbsp;&nbsp; RIGHTTOLEFT = 0x10<br>
+&nbsp;&nbsp;&nbsp;&nbsp; EXTENDED = 0x20<br>
+<b>List</b> is the List/Array return from RegEx<br>
+<b>$0,List[0]</b> is the Number of the GroupNumber+1<br>
+<b>$&,List[1]</b> is the Matched string<br>
+<b>$1,List[2]</b> is the first GroupNumber's string<br>
+<b>$`</b> Previous of Matched string<br>
+<b>$'</b> Behind of Matched string<br>
+<b>...</b><br>
+<br>
+eg.<br>
+&nbsp;&nbsp; L = <font color=red>RegEx</font>("&lt;html&gt;&lt;head&gt;&lt;title&gt;This is a demo for Regular Expression&lt;/title&gt;&lt;/head&gt;&lt;body&gt;demo&lt;/body&gt;&lt;/html&gt;","&lt;title&gt;(.*?)&lt;/title&gt;")<br>
+<br>
+L[0] = 2 #GroupNumber + 1<br>
+L[1] = "&lt;title&gt;This is a demo for Regular Expression&lt;/title&gt;"<br>
+L[2] = "This is a demo for Regular Expression;"<br>
+<br>
+<font color=red>$0</font> = 1 #GroupNumber<br>
+<font color=red>$&</font> = "&lt;title&gt;This is a demo for Regular Expression&lt;/title&gt;"<br>
+<font color=red>$1</font> = "This is a demo for Regular Expression;"<br>
+<font color=red>$`</font> = "&lt;html&gt;&lt;head&gt;"<br>
+<font color=red>$'</font> = "&lt;/head&gt;&lt;body&gt;demo&lt;/body&gt;&lt;/html&gt;"<br>
+<br>
+<b>ReturnString = RegExReplace( SourceStr, PatternStr, ReplaceWithThisStr [FLAG], [MatchTimes] )</b><br><br>
+<b>SourceStr</b> is the String to match.<br>
+<b>PatternStr</b> is the Regular Pattern string<br>
+<b>ReplaceWithThisStr</b> is the to Replace PatternStr Specified!<br>
+<b>FLAG</b> is the following Value(Default is <b>NO_FLAG</b>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; NO_FLAG = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp; SINGLELINE = 0x01<br>
+&nbsp;&nbsp;&nbsp;&nbsp; MULTILINE = 0x02<br>
+&nbsp;&nbsp;&nbsp;&nbsp; GLOBAL = 0x04<br>
+&nbsp;&nbsp;&nbsp;&nbsp; IGNORECASE = 0x08<br>
+&nbsp;&nbsp;&nbsp;&nbsp; RIGHTTOLEFT = 0x10<br>
+&nbsp;&nbsp;&nbsp;&nbsp; EXTENDED = 0x20<br>
+<b>MatchTimes</b> is the times to replace(Default is -1,Replace all)<br>
+<b>ReturnString</b> is the string replaced With ReplaceWithThisStr specified by PatternStr<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.3.10"></A>9.3.10 Is char In the string? (<font color=red>In</font>) <br>
+<br>
+result = <font color=red>In</font>( SrcStr , Char )<br>
+<br>
+Returns the value is true when the char in the SrcStr, otherwise the value of the result is false.<br>
+<br>
+for example:<br>
+srcstr = "0123456789"<br>
+<font color=red>If</font> (<font color=red>In</font>(srcstr,"8"))<br>
+&nbsp;&nbsp;<font color=red>msgbox</font>("char 8 is in the string:"+srcstr)<br>
+<font color=red>Else</font><br>
+&nbsp;&nbsp;<font color=red>msgbox</font>("char 8 isn't in the string:"+srcstr)<br>
+<font color=red>End</font><br>
+<br>
+<A NAME="9.3.11"></A>9.3.11 Get a substring from source string (<font color=red>Get ,GetNoCase</font>)<br>
+<br>
+result = Get( SrcStr , Begin , End [, PrevSearchStr][, InCludeBeginEnd])<br>
+result = GetNoCase( SrcStr , Begin , End , PrevSearchStr, InCludeBeginEnd )<br>
+<br>
+These function get a substring from the Source Str(SrcStr), specified by Begin and End, if Prev Search string specified, the function will search the PrevSearchStr first, then go to search the begin string after position of the PrevSearchStr, and the end string is the end of the substring will return.<br>
+<br>
+For examples:<br>
+<br>
+SrcStr = "vendor=Mort, root=<font color=blue>s0_</font>, test1. vendor=<font color=blue>Jeewood</font>, root=<font color=blue>s2_</font>, test2"<br>
+Result = <font color=red>Get</font>(SrcStr,"=",",")<br>
+<font color=green>//Result="<b>s0_</b>"</font><br>
+Result = <font color=red>Get</font>(SrcStr,"=",",",1)<br>
+ <font color=green>//Result="<b>=s0_,</b>"</font><br>
+Result = <font color=red>Get</font>(SrcStr,"=",",","<font color=blue>Jeewood</font>")<br>
+ <font color=green>//Result="<b>s2_</b>"</font><br>
+Result = <font color=red>Get</font>(SrcStr,"=",",","<font color=blue>Jeewood</font>",1)<br>
+ <font color=green>//Result="<b>=s2_,</b>"</font><br>
+Result = <font color=red>GetNoCase</font>(SrcStr,"=",",","<font color=blue>jeewood</font>")<br>
+ <font color=green>//Result="<b>s2_</b>"</font><br>
+Result = <font color=red>GetNoCase</font>(SrcStr,"=",",","<font color=blue>jeewood</font>",1)<br>
+ <font color=green>//Result="<b>=s2_,</b>"</font><br>
+<br>
+<A NAME="9.4"></A>9.4 Math functions<br>
+<br>
+<A NAME="9.4.1"></A>9.4.1 Formatted output (Format)<br>
+<br>
+string = Format( value, decimals )<br>
+<br>
+Returns the value as string with the given precision. The value will be rounded commercially if necessary.<br>
+Examples:<br>
+x = Format( 123.456789, 2 )<br>
+x = "123.46"<br>
+<br>
+x = Format( 12, 2 )<br>
+x = "12.00"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.2"></A>9.4.2 Conversion to/from hexadecimal (NumberToHex, HexToNumber)<br>
+<br>
+string = NumberToHex( int value )<br>
+int = HexToNumber( string )<br>
+<br>
+NumberToHex converts an integer value (floats are rounded) to a string with the hexadecimal value. The string is formatted to use full bytes, i.e. an even number of characters (like "0100" for 256 or "0a" for 11).<br>
+HexToNumber works the other way: It converts a string with an hexadecimal value to its integer value. It will work to the first invalid character, e.g. HexToNumber( "axe" ) will return 10, because "a" is a valid hex digit. Is also allows uppercase ("ADE").<br>
+Please note these functions will only work reliable with numbers from 0 to 2,147,483,647 (7fffffff). <br>
+Numbers from 2,147,483,648 (80000000) to 4,294,967,295 (ffffffff) will be converted fine from decimal to hexadecimal, but will return negative values when converted from hexadecimal to decimal. Also, -1 to -2,147,483,647 will return 8 byte hex values from ffffffff (-1) to 80000001 <br>
+(-2,147,483,647). That's because of the way negative values are stored internally (the first bit is the ¡°negative¡± flag).<br>
+Values exceeding this range will cause errors or strange results.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.3"></A>9.4.3 Rounding (Round, Floor, Ceil)<br>
+<br>
+int = Round( value )<br>
+int = Floor( value )<br>
+int = Ceil( value )<br>
+<br>
+These functions return the rounded value as integer.<br>
+Floor rounds down (2.9 2), Ceil rounds up (2.1 3), and Round uses commercial rounding, i.e. <br>
+rounding up starting with .5 (2.49 2, 2.5 3).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.4"></A>9.4.4 Random values (Rand)<br>
+<br>
+int = Rand( max )<br>
+float = Rand()<br>
+<br>
+If a max parameter is given, it returns integer values from 0 to max-1.<br>
+If no parameter is given, it returns float values from 0 to 0.999...<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.5"></A>9.4.5 Trigonometric functions (Sin, Cos, Tan)<br>
+<br>
+float = Sin( radians )<br>
+float = Cos( radians )<br>
+float = Tan( radians )<br>
+<br>
+Please note these functions use the radians as parameter! If you've got the degree (like 45¡ã), you can convert it with ¡°degree * PI / 180¡±.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.6"></A>9.4.6 Logarithms (Log, Log10)<br>
+<br>
+float = Log( value )<br>
+float = Log10( value )<br>
+<br>
+Log calculates the logarithm based on e (jScripts variable EULERT), Log10 based on 10.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.7"></A>9.4.7 Square root (Sqrt)<br>
+<br>
+float = Sqrt( value )<br>
+<br>
+Calculates the square root of the given value. The square root of 2 is also available in the variable SQRT2.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.4.8"></A>9.4.8 Compare float values (CompareFloat)<br>
+<br>
+int = CompareFloat( value1, value2, precision )<br>
+<br>
+Comparing float values is a bit tricky because there can be rounding errors. A zero might not be a ¡°real¡± zero, but something like 1*10-20.<br>
+With this little helper function, the values are rounded to the given precision and then compared.<br>
+It returns -1 if value1 < value2, 1 if value1 > value2, and 0 if both values are equal.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5"></A>9.5 Arrays<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5.1"></A>9.5.1 Get biggest index in series (MaxIndex)<br>
+<br>
+int = MaxIndex( array )<br>
+<br>
+Returns the biggest numerical index defined in a row starting from 1.<br>
+Example:<br>
+array[1]="a"<br>
+array["2"]="b"<br>
+array[3]="c"<br>
+array[5]="e"<br>
+array["x"]="X"<br>
+max = MaxIndex[array]<br>
+<br>
+will return 3.<br>
+jScripts handles string indexes with numerical contents like numerical indexes (to be precise, rather the other way round: numerical values are stored as strings), so "2" is regarded, while "x" isn't.<br>
+Because 4 is missing, 5 will be ignored. It would be the same if array[4] was defined and cleared with Clear() afterwards.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5.2"></A>9.5.2 Get number of elements (ElementCount)<br>
+<br>
+int = ElementCount( array )<br>
+<br>
+Contrary to MaxIndex, this returns the count of all array elements that were ever assigned, including those ¡°removed¡± with Clear() (which only removes the element's value, but not the element itself). For the array in the MaxIndex example, ElementCount would return 5.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5.3"></A>9.5.3 Create an array from a list of values (Array)<br>
+<br>
+array = Array( value {, value } )<br>
+<br>
+Returns an array with the given values, indexes start with 1.<br>
+Please note jScripts isn't able to do something like ¡°Array( "a", "b", "c")[1]¡±, you can only assign an array variable and then access the elements of that variable.<br>
+Example:<br>
+days = Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" )<br>
+day = days[ FormatTime("w")+1 ]<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5.4"></A>9.5.4 Create an array with named indexes (Map)<br>
+<br>
+array = Map( index, value {, index, value } )<br>
+<br>
+Returns an array with the given keys and values.<br>
+You must pass an even number of parameters, whereby the first value of each pair is the index and the second is the value.<br>
+Please note jScripts isn't able to do something like ¡°Map( 1, "a", 2, "b" )[1]¡±, you can only assign an array variable and then access the elements of that variable.<br>
+Example:<br>
+months = Map( "01", "Jan", "02", "Feb", "03", "Mar", etc. )<br>
+month = months[ FormatTime("m") ]<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.5.5"></A>9.5.5 Spit a string to multiple variables/array elements (Split)<br>
+<br>
+Split( string, separator, trim, variable {, variable } )<br>
+array = Split( string, separator [, trim] )<br>
+<br>
+Splits the string on each occurrence of the separator. If the separator consists of multiple characters, they must occur that way in the string which is splitted.<br>
+If you use the command version with multiple variables, the parts are assigned to the to given variables. If there are more variables than parts, the remaining variables will be empty, if there are more parts than variables, they'll be ignored.<br>
+If only a single variable is given or the function is used, the assigned variable will be an array with the single parts, i.e., variable[1] to variable[n]. Each assigned part will be a string value.<br>
+If "trim" is TRUE (or omitted in the function), any spaces surrounding the parts will be removed.<br>
+Examples:<br>
+Split( "a | b | c", "|", 1, a,b,c,d )<br>
+a="a", b="b", c="c", d=""<br>
+<br>
+Split( "a\ b \c.def", "\", 0, a, b )<br>
+a="a", b=" b "<br>
+<br>
+Split( "one, two, three", ",", 1, list )<br>
+list[1]="one", list[2]="two", list[3]="three"<br>
+<br>
+list = Split( "one, two, three", "," )<br>
+list[1]="one", list[2]="two", list[3]="three"<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6"></A>9.6 Execute applications or open documents<br>
+<br>
+<A NAME="9.6.1"></A>9.6.1 Open application/document and continue script (Run)<br>
+<br>
+Run( application [, parameter ] )<br>
+<br>
+Runs the application. The script continues while the application is loaded and executed.<br>
+Links (*.lnk), parameters, and documents are possible, too.<br>
+The complete path must be specified.<br>
+Examples:<br>
+Run( "\Windows\StartMenu\Messages.lnk" )<br>
+Run( "\Windows\PWord.exe", "\My documents\doc.psw" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.2"></A>9.6.2 Open application/document and wait until it's finished (RunWait)<br>
+<br>
+RunWait( application [, parameter ] )<br>
+<br>
+Like Run, but waits for the program to exit.<br>
+.lnk files won't work here.<br>
+Please note this will not have the desired effect if the program was already running. This is due to Windows' ¡°reactivation¡± behavior: The program is executed a second time. This second instance looks for an already existing instance, and, if found, will activate it and exit itself. Thus, the script <br>
+will continue after the second instance has finished, but the old instance is still running.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.3"></A>9.6.3 Run Other script in Current script (Include)<br>
+<br>
+Include( SubScript file )<br>
+<br>
+Include the given script to current execute script file.<br>
+There only replace the string "Include( SubScript file )" with the Script Content<br>
+Example:<br>
+SubScript.mscr<br>
+<br>
+A<font color=blue>=</font><font color=red>1234</font><br>
+<br>
+Main.mscr<br>
+<br>
+B<font color=blue>=</font><font color=red>5678</font><br>
+<font color=blue>Include</font>("SubScript.mscr")<br>
+<font color=red>Message</font>(A,B) <font color=gray>#Show 1234,5678</font><br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.4"></A>9.6.4 Create new document / element (New)<br>
+<br>
+New( menu entry )<br>
+<br>
+Creates a new document (resp. appointment or similar).<br>
+The menu entry must be given exactly how it's shown in the ¡°New¡± menu of the Today screen. Be aware this varies depending on the system's localization!<br>
+<br>
+Sadly, this useful function isn't as easy to use since Windows Mobile 5. In this case, you'll either have to try it, or look in the registry in <br>
+HKEY_LOCAL_MACHINE\Software\Microsoft\Shell\Extensions\NewMenu.<br>
+<br>
+Not available for: PC<br>
+<br>
+Example:<br>
+New( "Appointment" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.5"></A>9.6.5 Execute application at a given time (RunAt)<br>
+<br>
+RunAt( Unix timestamp, application [, parameter] )<br>
+RunAt( year, month, day, hour, minute<br>
+, applikation [, parameter ] )<br>
+<br>
+Runs the application at the given time. For this, the program is added to the so called ¡°Notification Queue¡±. The PPC will wake up from standby if necessary.<br>
+The ¡°Unix timestamp¡± is the time in seconds since 01/01/1970. This variant is interesting in combination with TimeStamp(), e.g. TimeStamp()+86400 for an execution in 24 hours (* 60 minutes * 60 seconds = 86400).<br>
+On many devices, jScriptss can't be executed directly. Instead, you have to invoke jScripts.exe with the script as parameter, e.g.<br>
+RunAt( starttime, SystemPath( "ScriptExe" ) \ "jScripts.exe", \<br>
+"""" .. SystemPath( "ScriptPath" ) \ "notify.mscr" .. """" )<br>
+<br>
+Another problem: On many PPCs with WM5, the device wakes up and runs the program, but the display stays off, and the device goes back to standby shortly after the program was started. It often helps to invoke ToggleDisplay(ON) at the start of the scheduled script, if not, only a system update or registry hacks might help.<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.6"></A>9.6.6 Execute application on each power on (RunOnPowerOn)<br>
+<br>
+RunOnPowerOn( application [, parameter ] )<br>
+<br>
+Executes a program every time the device is switched on. For this the program is added to the so called ¡°Notification Queue¡±.<br>
+You should think twice about using this command, since for example there can be nagging error messages if the given program is deleted or moved.<br>
+Please regard the hints in RunAt about running scripts or WM5.<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.6.7"></A>9.6.7 Remove application from Notification Queue¡°<br>
+<br>
+RemoveNotifications( application [, parameter] )<br>
+<br>
+Removes the program from the ¡°Notification Queue¡±, i.e., it will no more be executed automatically at given times (RunAt) or events (like RunOnPowerOn).<br>
+If there are multiple entries (e.g. multiple ¡°RunAt¡±s), all of them will be removed.<br>
+If a parameter is given, it will be checked and only entries with the corresponding parameter will be removed. Otherwise, all entries with the program will be removed, no matter which parameter is entered in the notification. To remove only entries without a parameter, use an empty string ("") as paremter.<br>
+Not available for: PC<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7"></A>9.7 Application windows<br>
+<br>
+<A NAME="9.7.1"></A>9.7.1 Window titles ¨C how jScripts finds a window<br>
+<br>
+In many commands and functions of this section, a window title must be passed.<br>
+jScripts then looks for a window which contains the given text as title. This is done case sensitive, i.e. ¡°Word¡± will not find ¡°WORD¡±. If there are mulitple windows, jScripts tries a ¡°best fit¡±, regarding the following (top = most important):<br>
+¡ñ Is the window a main window (it has no parent, or the parent is the desktop)<br>
+¡ñ Is the given text found at the beginning of the title<br>
+¡ñ Is the window visible (that's not the same as ¡°in the background¡±, it's more like ¡°not shown <br>
+in task list¡±)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.2"></A>9.7.2 Show and activate a window (Show)<br>
+<br>
+Show( window title )<br>
+<br>
+Activates the window with the given title.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.3"></A>9.7.3 Minimize/hide a window (Minimize)<br>
+<br>
+Minimize( window title )<br>
+<br>
+Minimizes (or, on Windows Mobil systems, rather hides) the window with the given title.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.4"></A>9.7.4 Close a window / end application (Close)<br>
+<br>
+Close( window title )<br>
+<br>
+Closes the window with the given title. If it's the main window of the application, the application usually is closed (exited), too. However, some rare programs ignore it.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.5"></A>9.7.5 Get the title of the currently active window (ActiveWindow)<br>
+<br>
+string = ActiveWindow()<br>
+<br>
+Returns the title of the currently active window.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.6"></A>9.7.6 Check whether a window is active (WndActive)<br>
+<br>
+bool = WndActive( window title )<br>
+<br>
+Returns TRUE, if a window with the given title is active, otherwise FALSE.<br>
+The given text can appear anywhere in the window title, the comparison is case sensitive. I.e., WndActive("top") returns TRUE, if the Today screen is active (it's title is "Desktop"), but not if "Top program¡° is active.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.7"></A>9.7.7 Check whether a window exists (WndExists)<br>
+<br>
+bool = WndExists( window title [, Case_sensitive])<br>
+Optional Option <Case_sensitive> if set true or Omitted or Number none zero, the WndExists will Case sensitive. if Case_sensitive set false or 0 then WndExists will not Case sensitive.<br>
+<br>
+Similar to WndActive(), but also returns TRUE if the window exists in background.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.8"></A>9.7.8 Wait until a window exists (WaitFor)<br>
+<br>
+WaitFor( window title, seconds )<br>
+<br>
+Waits (max. the given time) until the given window exists.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.9"></A>9.7.9 Wait until a window becomes active (WaitForActive)<br>
+<br>
+WaitForActive( window title, seconds )<br>
+<br>
+Waits (max. the given time) until the given window is active.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.10"></A>9.7.10 Get window title / element contents (WindowText)<br>
+<br>
+string = WindowText( x, y )<br>
+<br>
+Receives the window text of the element that's located at the given position. In most dialogs you can get labels, button labels, or contents of edit boxes that way.<br>
+It doesn't work as intended for application drawn elements (like in most games) or e.g. list boxes. In this cases, it'll usually return nothing (empty string) or the application's title.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.11"></A>9.7.11 Get window position (GetWindowPos, WndLeft, -Right, -Top, <br>
+<br>
+-Bottom)<br>
+GetWindowPos( window name, left, top, right, bottom )<br>
+int = WndLeft( window name )<br>
+int = WndRight( window name )<br>
+int = WndTop( window name )<br>
+int = WndBottom( window name )<br>
+<br>
+Receives the position of the named window.<br>
+GetWindowPos sets the variables given for left, top, right, and bottom.<br>
+The functions return a single border position each.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.12"></A>9.7.12 Send special commands (SendOK, SendCancel, SendYes, SendNo)<br>
+<br>
+SendCommand( [ window title, ] command id )<br>
+SendOK [ ( window title ) ]<br>
+SendCancel [ ( window title ) ]<br>
+SendYes [ ( window title ) ]<br>
+SendNo [ ( window title ) ]<br>
+<br>
+With these commands, pressing the corresponding button is emulated.<br>
+If no window title is given, the currently active window is used.<br>
+There's also no guarantee the other commands will work with every program, because the programmers aren't forced to use the default signals.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.7.13"></A>9.7.13 Send advanced commands/messages (SendCommand, <br>
+<br>
+SendMessage, PostMessage)<br>
+SendCommand( [ window title, ] command id )<br>
+PostMessage( [ window title, ] message id, wparam, lparam )<br>
+SendMessage( [ window title, ] message id, wparam, lparam )<br>
+int = SendMessage( [ window title, ] message id, wparam, lparam )<br>
+<br>
+SendCommand allows you to send any command id you want (usually all buttons and menu entries), but this'll require good connections to the programmer, because the command ids are different for every program and might even be different after an update.<br>
+Same goes for SendMessage and PostMessage, which are a more generic approach. You need good connections to the application programmer to use those, it could also cause big troubles (usually program crashes) if unexpected data is sent. SendMessage causes the message to be handled immediately, and thus also allows to get a return value. With PostMessage, the message is added to the message queue, so your script continues immediately, while the message is handled some time later. jScripts only supports numerical parameters.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.8"></A>9.8 Keystrokes<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.8.1"></A>9.8.1 Sending strings (SendKeys)<br>
+<br>
+SendKeys( [ window title, ] string )<br>
+<br>
+Sends the string as keystrokes to the given or currently active (if no window title was given) window.<br>
+<br>
+You can use [\x41] to send a char 'A', or [\065] so to send a char 'A'<br>
+<br>
+Examples:<br>
+SendKeys( "My window", "Hi, how are you" )<br>
+SendKeys( "Some text" )<br>
+<br>
+SendKeys( "My window", "\x41" )<br>
+SendKeys( "My window", "\065" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.8.2"></A>9.8.2 Sending special characters (e.g. direction keys) (Send...)<br>
+<br>
+SendSpecial( key name [ , state ] ] )<br>
+<br>
+Emulates the given keystroke.<br>
+Currently available keys are: Alt, Ctrl, Shift, CR, Win, Context, Tab, ESC, Space, Up, Down, Left, Right, Home, End, PageUp, PageDown, Delete, Backspace, Insert, Snapshot, F1 - F12, LeftSoft, RightSoft.The key's name must be passed as string. It's not case sensitive (i.e. ¡°Esc¡± and ¡°ESC¡± are the same). <br>
+Not all keys work on all systems, e.g. the soft keys are unknown to the desktop.<br>
+It's also possible to pass a numerical scan code. This is highly device dependent (esp. the localization of the system) and is more something for ¡°advanced hackers¡±.<br>
+If state is omitted, the key is pressed for a short time and then released. You can use the states ¡°down¡± and ¡°up¡± for keeping the key pressed until you release it again (handy for Alt, Ctrl, Shift, and Win). Don't forget the ¡°up¡±, otherwise it might cause some confusion afterwards...<br>
+<br>
+SendSpecial [ ( window title [ , Ctrl, Shift [, Alt ] ] ) ]<br>
+<br>
+Activates the given window and sends the given special character. If no window title is given, the currently active window is used.<br>
+Ctrl, Shift, and Alt are switches for the corresponding keys. If the parameter is TRUE, the key is pressed with the special character.<br>
+<br>
+There are there special characters:<br>
+CR......................Carriage return<br>
+Tab.....................Tabulator<br>
+Esc.....................Escape<br>
+Space...................Space<br>
+Backspace...............Remove character left to the cursor (¡±!¡±)<br>
+Delete..................Remove the character right to the cursor (Del¡°)<br>
+Insert..................Ins.¡± (usually toggles between overwrite and insert mode)<br>
+Up/Down/Left/Right......Direction pad to the corresponding direction<br>
+Home....................Home¡°, to the beginning of the line or document<br>
+End.....................Ende, the the end of the line or document<br>
+PageUp/PageDown.........Page up / down (Page "¡± / Page #¡±)<br>
+LeftSoft/RightSoft......Display buttons¡° on Smartphones and PPCs since WM5<br>
+Win.....................Windows¡° key on Smartphones and PPCs since WM5 (Start menu)<br>
+Context.................Context menu¡° on PCs and Smartphones/PPCs since WM5<br>
+<br>
+Examples:<br>
+SendCR( "ERROR" )<br>
+SendDown<br>
+SendHome( "",0,1 ) (highlight to beginning of line)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.8.3"></A>9.8.3 Copy screen contents to clipboard (Snapshot)<br>
+<br>
+Snapshot [ ( window title ) ]<br>
+<br>
+Activates the given window (if a parameter is passed) and copies the screen contents to the clipboard. (¡°Print screen¡± function of the system, might not work with every program).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.8.4"></A>9.8.4 Sending Ctrl+key (SendCtrlKey)<br>
+<br>
+SendCtrlKey ( [ window title, ] key )<br>
+<br>
+Sends Ctrl + key to the current or given window.<br>
+E.g., SendCtrlKey( "v" ) sends Ctrl+V (insert from clipboard) to the current window.<br>
+The key is not case sensitive, "v" and "V" will do the same.<br>
+The key must be exactly one character. Of course, this can be the result of an expression, too (like a variable).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.9"></A>9.9 Mouse clicks / tapping<br>
+<br>
+<A NAME="9.9.1"></A>9.9.1 Single click (MouseClick)<br>
+<br>
+MouseClick( [ window title, ] x, y )<br>
+RightMouseClick( [ window title, ] x, y )<br>
+MiddleMouseClick( [ window title, ] x, y )<br>
+<br>
+Simulates a mouse click at the given position.<br>
+If a window is given, the position is relative to its upper left corner. If the window has a border (e.g. message boxes and questions), it is included.<br>
+If no window is given, the upper left corner of the display is 0,0.<br>
+<br>
+The Right... and Middle... commands simulate mouse clicks with the right resp. middle mouse button, and are only available in the PC variant.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.9.2"></A>9.9.2 Double click (MouseDblClick)<br>
+<br>
+MouseDblClick( [ window title, ] x, y )<br>
+RightMouseDblClick( [ window title, ] x, y )<br>
+MiddleMouseDblClick( [ window title, ] x, y )<br>
+<br>
+Just like MouseClick, but sending a double click.<br>
+The Right... and Middle... commands simulate mouse clicks with the right resp. middle mouse button, and are only available in the PC variant.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.9.3"></A>9.9.3 Press / release the mouse button separated (MouseDown/MouseUp)<br>
+<br>
+MouseDown( [ window title, ] x, y )<br>
+MouseUp( [ window title, ] x, y )<br>
+RightMouseDown( [ window title, ] x, y )<br>
+RightMouseUp( [ window title, ] x, y )<br>
+MiddleMouseDown( [ window title, ] x, y )<br>
+MiddleMouseUp( [ window title, ] x, y )<br>
+<br>
+Simulates pressing resp. releasing the mouse button. The parameters are as those of MouseClick.<br>
+These two commands should be used together. With those, you can simulate ¡°Tap&Hold¡± (Sleep between them) or ¡°Drag&Drop¡± (MouseUp on another position).<br>
+<br>
+The Right... and Middle... commands simulate mouse clicks with the right resp. middle mouse button, and are only available in the PC variant.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.10"></A>9.10 Waiting<br>
+<br>
+<A NAME="9.10.1"></A>9.10.1 Fixed delay in milliseconds (Sleep)<br>
+<br>
+Sleep( milliseconds )<br>
+<br>
+Waits the specified time.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.10.2"></A>9.10.2 Wait message with countdown / condition (SleepMessage)<br>
+<br>
+SleepMessage( [seconds,] message [,Width ,Height] [, title [ , Type [ , condition ] ] ] )<br>
+<font color=blue>Type</font>:0,1,2(No Control Button/Menu, OK Button/Menu, OK Cancel Buttons/Menu)<br>
+<font color=blue>Width, Height</font> Only used in Smartphone!<br>
+<br>
+Shows a wait message with a countdown.<br>
+If a condition is given, it will be checked every second and the dialog will be closed as soon as it becomes fulfilled.<br>
+See also 9.20.10 Set font for big messages (SetMessageFont)<br>
+Example:<br>
+SleepMessage( 10, "Waiting for PocketWord", "Wait...", 0, \<br>
+wndExists( "Word" ) )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.10.3"></A>9.10.3 Waiting for windows (WaitFor / WaitForActive)<br>
+<br>
+See 9.7.8 Wait until a window exists (WaitFor) and 9.6.8 Wait until a window becomes active (WaitForActive)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.11"></A>9.11 Time<br>
+<br>
+<A NAME="9.11.1"></A>9.11.1 Unix timestamp (TimeStamp)<br>
+<br>
+int = TimeStamp()<br>
+<br>
+Returns the current time in seconds since 01/01/1970 (aka Epoch).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.11.2"></A>9.11.2 Formatted output (FormatTime)<br>
+<br>
+string = FormatTime( format [, timestamp ] )<br>
+<br>
+Returns the time of the timestamp, or the current time if none is given, formatted corresponding to the format string.<br>
+<br>
+These characters will be replaced with the corresponding value:<br>
+<br>
+H<br>
+h<br>
+a<br>
+A<br>
+i<br>
+s<br>
+d<br>
+m<br>
+Y<br>
+y<br>
+w<br>
+u<br>
+<br>
+Hour (00-23)<br>
+Hour (01-12)<br>
+am/pm<br>
+AM/PM<br>
+Minute (00-59)<br>
+Seconds (00-59)<br>
+Day (01-31)<br>
+Month (01-12)<br>
+Year (4 digits)<br>
+Year (2 digits)<br>
+Day of week (0=Sunday to 6=Saturday)<br>
+Unix timestamp<br>
+<br>
+{MM} Month name (e.g. ¡°January¡±)<br>
+{M} Month name abbreviated (e.g. ¡°Jan¡±)<br>
+{WW} Day of week name (e.g. ¡°Monday¡±)<br>
+{W} Day of week name abbreviated (e.g. ¡°Mon¡±)<br>
+<br>
+All other characters remain unchanged.<br>
+Note all return values will be strings. This is to allow leading zeroes, like "02" for february, which is handy to combine filenames. However, it might cause troubles when using arrays. You either need to assign the array elements with strings (¡°Month["01"] = "First"¡±) or convert the string to a number, e.g. by using ¡°FormatTime("m")*1¡±.<br>
+<br>
+Examples:<br>
+x = FormatTime( "h:i:s a" )<br>
+x = FormatTime( "m/d/Y", TimeStamp() + 86400 )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.11.3"></A>9.11.3 Set current time to multiple variables (GetTime)<br>
+<br>
+GetTime( variable, variable, variable )<br>
+<br>
+Retrieves the current time into three variables for hour, minute, and seconds.<br>
+<br>
+GetTime( variable, variable, variable,<br>
+variable, variable, variable )<br>
+<br>
+Like above, but three more variables for day (of month), month, and year (4 digits).<br>
+<br>
+Note all variable values will be strings. This is to allow leading zeroes, like "02" for february, which is handy to combine filenames.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12"></A>9.12 Copy, rename, move, and delete files<br>
+<br>
+<A NAME="9.12.1"></A>9.12.1 Copy a single file (Copy)<br>
+<br>
+Copy( source file, target file [, overwrite] )<br>
+<br>
+Copies a file.<br>
+The target must contain a filename, too. (I.e., not only the path!)<br>
+If overwrite is FALSE or omitted, already existing files won't be overwritten.<br>
+Example:<br>
+Copy( "\My documents\test.txt", "\Storage\text.txt" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.2"></A>9.12.2 Copy multiple files (XCopy)<br>
+<br>
+XCopy( source files, target directory [, overwrite<br>
+[, subdirs ] ] )<br>
+<br>
+Copies files to the target directory.<br>
+The source can contain wildcards (* and ) in the filename (e.g. "\My documents\*.psw", but not "\My *\*.psw").<br>
+The target must be an existing directory.<br>
+If overwrite is FALSE or omitted, already existing files won't be overwritten.<br>
+If subdirs is TRUE, all files fitting to the source filter contained in subdirectories will be copied, too. The target subdirectories are created if necessary.<br>
+Examples:<br>
+XCopy( "\My documents\*.txt", "\Storage" )<br>
+XCopy( "\My documents\*.txt", "\Storage", TRUE, TRUE ) (will copy also ¡°\My documents\texts\x.txt¡± to ¡°\Storage\texts\x.txt¡±)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.3"></A>9.12.3 Rename or move a single file (Rename)<br>
+<br>
+Rename( source file, target file [, overwrite ] )<br>
+<br>
+Renames or moves a file.<br>
+You have to include the path in the target, too!<br>
+If overwrite is FALSE or omitted, already existing files won't be overwritten.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.4"></A>9.12.4 Move multiple files (Move)<br>
+<br>
+Move( source files, target directory [, overwrite<br>
+[, subdirs ] ] )<br>
+<br>
+Moves files to the target directory.<br>
+The source can contain wildcards (* and ) in the filename (e.g. "\My documents\*.psw", but not "\My *\*.psw").<br>
+The target must be an existing directory.<br>
+If overwrite is FALSE or omitted, already existing files won't be overwritten.<br>
+If subdirs is TRUE, all files fitting to the source filter contained in subdirectories will be moved, too. The target subdirectories are created if necessary. The source directories will not be removed if they're empty afterwards.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.5"></A>9.12.5 Delete file(s) (Delete)<br>
+<br>
+Delete( files )<br>
+<br>
+Deletes the file(s).<br>
+The file parameter can contain wildcards (* and ) in the filename (e.g. "\My documents\*.psw", but not "\My *\*.psw").<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.6"></A>9.12.6 Delete files, also in subdirectories (DelTree)<br>
+<br>
+DelTree( files )<br>
+<br>
+Deletes the file(s), including all subdirectories.<br>
+If the (sub)directory is empty afterwards, it will be removed.<br>
+The file parameter can contain wildcards (* and ) in the filename (e.g. "\My documents\*.psw", but not "\My *\*.psw"), which will also be used for the subdirectories.<br>
+If no file filter is given (e.g. DelTree( "\Temp" )) and the given path exists, *.* is assumed.<br>
+Please handle with care!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.12.7"></A>9.12.7 Creating a shortcut/link (CreateShortcut)<br>
+<br>
+CreateShortcut( shortcut file, target file [, overwrite ] )<br>
+<br>
+Creates a shortcut (link) to the target file. This can be an entry in the start menu, for example.<br>
+If overwrite is FALSE or omitted, already existing files won't be overwritten.<br>
+Example:<br>
+CreateShortcut("\Windows\Start Menu\Test.lnk","\Storage\Test.exe")<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.13"></A>9.13 Reading and writing text files<br>
+<br>
+<A NAME="9.13.1"></A>9.13.1 Reading a text file (ReadFile)<br>
+<br>
+string = ReadFile( file name [, length [, codepage ] ] )<br>
+<br>
+Reads the contents of the file into the variable. The file size is limited to length, 512kB or the available memory (whichever is the least). If length is 0, the default maximum (512kB) is used.<br>
+Possible values for the codepage are either the codepage numbers (if you know them) like 1252 (Western Europe), 437 (American DOS), ... or any of those strings:<br>
+¡ñ "latin1" (Western Europe)<br>
+¡ñ "jis" (Japanese)<br>
+¡ñ "wansung" (Korean)<br>
+¡ñ "johab" (Korean)<br>
+¡ñ "chinesesimp" (Chinese simplified)<br>
+¡ñ "chinesetrad" (Chinese traditional)<br>
+¡ñ "hebrew"<br>
+¡ñ "arabic"<br>
+¡ñ "greek"<br>
+¡ñ "turkish"<br>
+¡ñ "baltic"<br>
+¡ñ "latin2" (mostly Eastern Europe)<br>
+¡ñ "cyrillic"<br>
+¡ñ "thai"<br>
+¡ñ "utf8" (special encoding only for non-ASCII characters)<br>
+¡ñ "unicode" (2 bytes for each character, to be more precise UTF-16 little endian)<br>
+¡ñ "utf8-prefix" (like "utf8", but file starts with the hex values EF BB BF, which is an indicator for some editors/programs)<br>
+¡ñ "unicode-prefix" (similar to "utf8-prefix", but with FF FE prefix and unicode)<br>
+<br>
+Default is the system's default codepage, which depends on your Windows localization. UTF8 or Unicode encoded files are also recognized, if they start with the corresponding prefixes (see ¡°-prefix¡± encodings above).<br>
+You can parse the file e.g. with ForEach line in split ( contents, "^LF^", TRUE ) See also the ForEach possibilities for INI files and ReadINI/WriteINI!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.13.2"></A>9.13.2 Writing to a text file (WriteFile)<br>
+<br>
+WriteFile( file name, contents [, append [, codepage ] ] )<br>
+<br>
+Writes the contents to the file.<br>
+If append is FALSE or the parameter is omitted, an existing file will be overwritten, otherwise the given contents is appended at the end of the existing data.<br>
+For possible values for codepage, please see ReadFile above. The ¡°-prefix¡± variations only are applied if append is FALSE!<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.13.3"></A>9.13.3 Reading a value of an INI file (IniRead)<br>
+<br>
+string = IniRead( file name, section, entry )<br>
+<br>
+Reads an entry from an INI file. The section name must be passed without the brackets.<br>
+Example:<br>
+x = IniRead( "\My documents\test.ini", "Settings", "Test" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.13.4"></A>9.13.4 Writing a value to an INI file (IniWrite)<br>
+<br>
+IniWrite( file name, section, entry, value )<br>
+<br>
+Writes an entry to an INI file. The section name must be passed without the brackets.<br>
+Be aware this causes jScripts to load, parse, and write the entire file. It might be better to do this yourself (ReadFile, ForEach with split, WriteFile) if many values are modified.<br>
+Example:<br>
+IniWrite( "\My documents\test.ini", "Settings", "Test", "x" )<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.13.5"></A>9.13.5 Access serial ports (SetComInfo)<br>
+<br>
+SetComInfo( port, timeout [, baud rate [, parity [, bits<br>
+[, stop bits [, control ]]]]] )<br>
+<br>
+With this command you define how a COM port is accessed.<br>
+The command must be invoked before ReadFile or WriteFile. When you call those functions with COM1:¡° (or any other COM port) as file name, the access is initialized with the given values.<br>
+You should use ReadFile with a maximum size, otherwise there might be a huge lag until the timeout is reached. E.g. data = ReadFile( "COM1:", 100 ).<br>
+Parameters:<br>
+Port.............The port as DOS filename, e.g. "COM1:". Please regard uppercase and colons!<br>
+Timeout..........Timespan in milliseconds after which the system should cancel the access<br>
+<br>
+Baud rate<br>
+<br>
+The transfer speed. Usually it's 9600, 14400, or 56700, the default if you omit this <br>
+parameter is 9600.<br>
+<br>
+Parity...........The parity of a check bit. Possible values are "none", "even", "odd", "mark", and "space". In most cases, it's "none", which is also the default, rarely "even" or "odd".<br>
+Bits.............Number of bits per transmitted byte. Nowadays it's almost always 8 (default), only in rare cases it's 7, less it almost never used.<br>
+Stop bits........Number of stop bits (duration between bytes). Possible values are 1 (default) 1.5 (pass as quoted string!), and 2.<br>
+Control..........Type of flow control. Available are "None", "RTS/CTS" (default), and "XON/XOFF".<br>
+<br>
+Hint: Depending on system, drivers, and device, not all parameters are always used correctly. <br>
+Especially the timeout seems to be handled differently, sometimes it's even ignored completely.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14"></A>9.14 File system informations<br>
+<br>
+<A NAME="9.14.1"></A>9.14.1 Check whether file or directory exists (FileExists/DirExists)<br>
+<br>
+bool = FileExists( file name )<br>
+bool = DirExists( directory name )<br>
+<br>
+Returns TRUE, if the file or directory exists, FALSE if not.<br>
+It also returns FALSE, if the entry doesn't correspond to the queried type. This means,¡°FileExists( "\Windows" )¡± is FALSE, because it's a directory, not a file.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.2"></A>9.14.2 Check free space (FreeDiskSpace)<br>
+<br>
+int = FreeDiskSpace( directory )<br>
+<br>
+Returns the free disk space in the given directory in bytes (max. 2147483147 = ~2GB).<br>
+On Windows Mobile devices, the directory (e.g. ¡°\Storage¡° for the storage card), on PCs the drive letter (¡°D:\...¡±) is regarded.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.3"></A>9.14.3 Check disk size (TotalDiskSpace)<br>
+<br>
+int = TotalDiskSpace( directory )<br>
+<br>
+Returns the size of the disk of the given directory in bytes (max. 2147483147 = ~2GB).<br>
+On Windows Mobile devices, the directory (e.g. ¡°\Storage¡° for the storage card), on PCs the drive letter (¡°D:\...¡±) is regarded.<br>
+I know, 2GB isn't much, but handling larger numbers would be quite complicated, because that number is the highest value a 32 bit system can handle without workarounds... (Yes, 4GB would be possible, too, but then negative numbers wouldn't be supported at all in jScripts...)<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.4"></A>9.14.4 Get file size (FileSize)<br>
+<br>
+int = FileSize( file name )<br>
+Returns the size of the file in bytes.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.5"></A>9.14.5 Get file creation time (FileCreateTime)<br>
+<br>
+int = FileCreateTime( file name )<br>
+Returns the creation time of the file as unix timestamp, or 0 if the file doesn't exist.<br>
+See also 9.11 Time for informations about how to compare or format it.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.6"></A>9.14.6 Get file modification time (FileModifyTime)<br>
+<br>
+int = FileModifyTime( file name )<br>
+Returns the last modification time of the file as unix timestamp, or 0 if the file doesn't exist.<br>
+See also 9.11 Time for informations about how to compare or format it.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.7"></A>9.14.7 Get file attributes (FileAttribs)<br>
+<br>
+bool = FileAttribute( file name, attribute )<br>
+Returns the current state of the given file attribute. TRUE = attribute is set, FALSE = not set<br>
+<br>
+Allowed values for ¡°attribute¡±:<br>
+¡ñ directory (is the given file a directory)<br>
+¡ñ hidden (hidden file)<br>
+¡ñ readonly (write protection)<br>
+¡ñ system (system file)<br>
+¡ñ archive (not archived)<br>
+Must be passed as string (i.e. in quotation marks or as value of a variable/expression).<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.8"></A>9.14.8 Set file attributes (SetFileAttribute, SetFileAttribs)<br>
+<br>
+SetFileAttribute( file name, attribute, set )<br>
+<br>
+Sets (set=TRUE) resp. removes (set=FALSE) the given file attribute. All other attributes remain unmodified.<br>
+<br>
+Allowed values for ¡°attribute¡±:<br>
+¡ñ hidden (hidden file)<br>
+¡ñ readonly (write protection)<br>
+¡ñ system (system file)<br>
+¡ñ archive (not archived)<br>
+Must be passed as string (i.e. in quotation marks or as value of a variable/expression).<br>
+<br>
+Examples:<br>
+SetFileAttribute("\Test.txt", "hidden", TRUE)<br>
+hides the file<br>
+<br>
+SetFileAttribute("\Test.txt", "readonly", FALSE)<br>
+removes the write protection<br>
+<br>
+SetFileAttribs( file name, read only [, hidden [, archive ]] )<br>
+<br>
+Sets the given file attributes. With TRUE (or any other numeric value except 0/FALSE) the attribute is set, with FALSE it'll be removed. An empty string ("") will keep the attribute unmodified.<br>
+<br>
+Examples:<br>
+SetFileAttribs("\Test.txt", "", TRUE)<br>
+hides the file, read only (and other attributes) remains unmodified<br>
+<br>
+SetFileAttribs("\Test.txt", FALSE)<br>
+removes read only attribute, all other attributes remain unmodified<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.9"></A>9.14.9 Get version number (FileVersion / GetVersion)<br>
+<br>
+string = FileVersion( file name )<br>
+GetVersion( file name, variable, variable, variable, variable )<br>
+<br>
+Gets the version number in the resources, either as string ("a.b.c.d") or into single variables (integer values).<br>
+This information isn't contained or accurate in all files. If contained, the version is always in four levels, usually major, minor, patch, and build version.<br>
+When using the function FileVersion, the parts are concatenated with dots, (e.g. "3.1.2.0"), the command GetVersion assigns each part to a separate variable.<br>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+<br>
+<A NAME="9.14.10"></A>9.14.10 Get files from specify directory (<font color=red><b>DirContents</b></font>)</a><br>
+<br>
+Array = DirContents( FileNameWithPath , type)<br>
+<br>
+FileNameWithPath looks like <font color=red>"/Windows/*.exe"</font><br>
+type:<br>
+1 only filename list to the array<br>
+2 only directory name list to the array<br>
+3 both file and directory name list to the array (Default)<br>
+<br>
+DirContents function return is an array structure, File or Directory name store <font color=red>Array[1],Array[2]...</font><br>
+<br>
+For example:<br>
+<br>
+fl = <font color=red>DirContents</font>("/windows/cal*.exe",1)<br>
+<font color=green>
+//fl[1] = "calc.exe"<br>
+//fl[2] = "calendar.exe"<br>
+//fl[3] = "callinfo.exe"<br>
+//fl[4] = "calnot.exe"<br>
+//fl[5] = "calupd.exe"<br>
+</font>
+<br>
+<a href="javascript:history.back(-1)">Return</a><br>
+</body>
+</html>

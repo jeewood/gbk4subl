@@ -1,0 +1,210 @@
+User=Server Host=jwz-PC Ip=127.0.0.1 Server start
+User=Server Host=jwz-PC Ip=127.0.0.1 Server connected
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 332
+User=332 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=332 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 67 h.size 58
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 348
+User=348 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=348 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 67 h.size 58
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 336
+User=336 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=336 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 364
+User=364 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=364 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 344
+User=344 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=344 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 360
+User=360 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=360 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 352
+User=352 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=352 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 368
+User=368 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=368 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 340
+User=340 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=340 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 380
+User=380 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=380 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+User=Server Host=jwz-PC Ip=127.0.0.1 Server accept 372
+User=372 Host=jwz-PC Ip=127.0.0.1 Client th start
+User=372 Host=jwz-PC Ip=127.0.0.1 Client read=43 bytes hed size=34 btes op=2
+User=adi Host=jwz-PC Ip=127.0.0.1 login user=adi password=cool
+User=adi Host=jwz-PC Ip=127.0.0.1 Open databes dbname=test.sqlite
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 13 h.size 4
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=40 bytes hed size=31 btes op=4
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 type=12 dbname=main tablename=test
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 17 h.size 8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=17 bytes hed size=8 btes op=5
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 3841606 h.size 3841597
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=8
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client read=13 bytes hed size=4 btes op=3
+User=adi Host=jwz-PC Ip=127.0.0.1 Client send nr 9 h.size 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client disconected 0
+User=adi Host=jwz-PC Ip=127.0.0.1 Client th end
+

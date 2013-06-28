@@ -1,0 +1,115 @@
+COMPILER JScr
+
+CHARACTERS
+  letter   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" .
+  digit    = "0123456789" .
+  hexdigit = digit + "ABCDEFabcdef" .
+  tab      = '\t' .
+  lf       = '\n' .
+  cr       = '\r' .
+  files    = letter + digit + ":\\." .
+  chars    = ANY - '\'' .
+  strings  = ANY - '"'.
+  macros   = ANY - lf .
+
+TOKENS
+  identifier = ( "$" | "_" | letter) { "_" | letter | digit } .
+  number     = digit { digit } [ "." { digit }] [ "U" | "u" | "L" | "l" ] .
+  HexNumber  = "0" ( "x" | "X" ) hexdigit { hexdigit } [ "U" | "u" | "L" | "l" ] .
+  string     = '"' { strings } '"' .
+  char       = "'" [ "\\" ] chars "'" .
+
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM "//" TO cr lf
+
+IGNORE tab + lf + cr
+
+PRODUCTIONS
+
+  JScr                 =  { Statement }.
+
+  Statement            = ( AssignmentExpression | BreakStatement
+                           | ContinueStatement
+                           | DoStatement | ForStatement
+                           | IfStatement | ";"
+                           | ReturnStatement | SwitchStatement
+                           | WhileStatement | BlockStatement
+                           | DefineStatement) .
+
+  DefineStatement      = "def" [identifier{ "." identifier }] "(" [ ParamExpression ] ")" BlockStatement .
+
+  NameList             = [ "::" ] identifier { "," [ "::" ] identifier } .
+  
+  ParamExpression      = identifier { "," (identifier | "...") } | "..."  .
+
+  BlockStatement       = "{" { Statement } "}" .
+
+  Label                = "case" ( Expression ({"," Expression } | ".." Expression )) ":"  |  "default" ":" .
+
+  AssignmentExpression = Expression ";" .
+
+  BreakStatement       = "break" ";" .
+
+  ContinueStatement    = "continue" ";" .
+
+  DoStatement          = "do" Statement "while" "(" Expression ")" ";" .
+
+  ForStatement         = "for"  "(" [ Expression ] ";" [ Expression ] ";" [ Expression ] ")" Statement .
+
+  IfStatement          = "if" "(" Expression ")" Statement [ "else" Statement ] .
+
+  ReturnStatement      = "return" ( [ ActualParameters ] ";" | DefineStatement).
+
+  SwitchStatement      = "switch" "(" Expression ")" "{" { Label [ Statement ] } "}" .
+
+  WhileStatement       = "while" "(" Expression ")" Statement .
+
+  Expression           = LogORExp { AssignmentOperator ActualParameters }.
+
+  LogORExp             = LogANDExp   { "||" LogANDExp } .
+
+  LogANDExp            = InclORExp   { "&&" InclORExp }.
+
+  InclORExp            = ExclORExp   { "|" ExclORExp } .
+
+  ExclORExp            = ANDExp      { "^" ANDExp } .
+
+  ANDExp               = EqualExp    { "&" EqualExp } .
+
+  EqualExp             = RelationExp { ( "==" | "!=" ) RelationExp } .
+
+  RelationExp          = ShiftExp    { ( "<" | ">" | "<=" | ">=" ) ShiftExp }.
+
+  ShiftExp             = AddExp      { ( "<<" | ">>" ) AddExp } .
+
+  AddExp               = MultExp     { ( "+" | "-" ) MultExp } .
+
+  MultExp              = UnaryExp     { ( "*" | "/" | "%" ) UnaryExp } .
+
+  UnaryExp             = PostFixExp
+                         | ( "++" | "--" | UnaryOperator) UnaryExp
+                         .
+
+  PostFixExp           = Primary
+                         { "[" [ ActualParameters ] "]"
+                          | FunctionCall
+                          | "." identifier
+                          | "->" identifier
+                          | "++"
+                          | "--"
+                         } .
+
+  Primary              = NameList | string | char | number | "(" Expression ")" | "[" [ ActualParameters ] "]" .
+
+  FunctionCall         = "(" [ ActualParameters ] ")" .
+
+  ActualParameters     = Expression { "," Expression } .
+
+  AssignmentOperator   =   "="  | "*=" | "/=" | "%=" | "+=" | "-=" | "&="
+                         | "^=" | "|=" | "<<=" | ">>=" .
+
+  UnaryOperator        = "+" | "-" | "*" | "!" | "&" | "~" .
+
+  
+
+END JScr.

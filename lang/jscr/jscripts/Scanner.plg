@@ -1,0 +1,42 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Scanner - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\jwz\AppData\Local\Temp\RSPB486.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"Debug/" /Fp"Debug/Scanner.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"D:\Tools\st3dev\lang\jscr\jscripts\Scanner.cpp"
+"D:\Tools\st3dev\lang\jscr\jscripts\Parser.cpp"
+"D:\Tools\st3dev\lang\jscr\jscripts\Jscr.cpp"
+]
+Creating command line "cl.exe @C:\Users\jwz\AppData\Local\Temp\RSPB486.tmp" 
+Creating temporary file "C:\Users\jwz\AppData\Local\Temp\RSPB487.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/Scanner.pdb" /debug /machine:I386 /out:"Debug/Scanner.exe" /pdbtype:sept 
+.\Debug\Scanner.obj
+.\Debug\Parser.obj
+.\Debug\Jscr.obj
+]
+Creating command line "link.exe @C:\Users\jwz\AppData\Local\Temp\RSPB487.tmp"
+<h3>Output Window</h3>
+Compiling...
+Scanner.cpp
+Parser.cpp
+Skipping... (no relevant changes detected)
+Jscr.cpp
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/Scanner.bsc"  .\Debug\Scanner.sbr .\Debug\Parser.sbr .\Debug\Jscr.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+Scanner.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

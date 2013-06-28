@@ -1,0 +1,14 @@
+n = 10
+b = "NO"
+def fact(n)
+	::b = "OK"
+	if (n==1) then 
+		return 1 
+	else 
+		return n*fact(n-1)
+	end
+end
+
+a="Hello,world My Friends!" + b + n.s + fact(n)
+
+msgbox(a)
