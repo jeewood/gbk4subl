@@ -1,0 +1,15 @@
+{
+	"working_dir": "$file_path",
+	"cmd": [ "make.cmd"],//"&&","make.exe","clean" ],
+	"encoding": "cp936",
+	
+	"variants":
+	[
+		{
+			"working_dir": "$file_path",
+			"name": "Run",
+			"cmd": [ "cmd","/c","make.cmd","&&","PTG.cmd"],//"&&","make.exe","clean" ],
+			"encoding": "cp936"
+		}
+	]	
+}

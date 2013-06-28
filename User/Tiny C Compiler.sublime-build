@@ -1,0 +1,16 @@
+{
+	"shell_cmd": "D:/Tools/st3dev/lang/tcc/tcc.exe \"${file}\" -bench",
+	"file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+	"working_dir": "${file_path}",
+	"selector": "source.c",
+	//"encoding": "cp936",
+
+	"variants":
+	[
+		{
+			"name": "Run",
+			"shell_cmd": "D:/Tools/st3dev/lang/tcc/tcc.exe -bench \"${file}\" && \"${file_path}/${file_base_name}\"",
+			"encoding": "cp936"
+		}
+	]
+}
