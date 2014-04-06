@@ -1,5 +1,7 @@
 import sublime, sublime_plugin
-import os
+import time, os
+
+pos  = 0
 
 def log(msg):
     print(msg)
@@ -53,15 +55,21 @@ class ToUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         if isView(view.id()) and view.file_name() and os.path.exists(view.file_name()):
+            global pos
             fp = open(view.file_name(),'rb')
             buf = fp.read()
             fp.close()
             text = buf.decode('gbk')
             text = text.replace('\r\n','\n').replace('\r','\n')
             reg_all = sublime.Region(0, view.size())
+            view.replace(edit,reg_all,text)
+
             view.erase_status(str(view.file_name()) + '_GBK_STATUS')
             view.set_status(str(view.file_name()) + '_GBK_STATUS','<L>')
-            view.replace(edit,reg_all,text)
+
+            view.sel().clear()
+            view.sel().add(pos)
+
             view.set_scratch(True)
 
 class SaveUtf8Command(sublime_plugin.TextCommand):
@@ -74,6 +82,8 @@ class SaveUtf8Command(sublime_plugin.TextCommand):
 
 class PluginEventListener(sublime_plugin.EventListener):
     def on_load(self, view):
+        global pos
+        pos = view.sel()[0]
         if isView(view.id()) and  view.get_status('_ISGBKFILE')!='GBK' and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
 
@@ -83,6 +93,8 @@ class PluginEventListener(sublime_plugin.EventListener):
 
     def on_pre_save(self, view):
         if isView(view.id()):
+            global pos
+            pos = view.sel()[0]
             file_encoding(view)
 
     def on_close(self, view):
