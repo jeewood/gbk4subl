@@ -35,6 +35,19 @@ def file_encoding(view):
                 return 'GBK'
     return 'UNKNOWN'
 
+def SetVar(view, var, value):
+    if(isView(view.id())):
+        view.erase_status(var)
+        view.set_status(var, value)
+
+def GetVar(view, var):
+    if(isView(view.id())):
+        value = view.get_status(var)
+        #if (int(value)!=0):
+        #    SetVar(view,var,'0')
+        return value
+    return 0
+
 class FromUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
@@ -54,6 +67,7 @@ class ToUtf8Command(sublime_plugin.TextCommand):
         view = self.view
         if isView(view.id()) and view.file_name() and os.path.exists(view.file_name()):
             fp = open(view.file_name(),'rb')
+            #pos = view.sel()[0]
             buf = fp.read()
             fp.close()
             text = buf.decode('gbk')
@@ -63,6 +77,7 @@ class ToUtf8Command(sublime_plugin.TextCommand):
             view.set_status(str(view.file_name()) + '_GBK_STATUS','<L>')
             view.replace(edit,reg_all,text)
             view.set_scratch(True)
+            #print(view.visible_region())
 
 class SaveUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -84,6 +99,13 @@ class PluginEventListener(sublime_plugin.EventListener):
     def on_pre_save(self, view):
         if isView(view.id()):
             file_encoding(view)
+            pos = view.sel()[0]
+            row,col = view.rowcol(pos.b)
+            x = view.viewport_position()
+            y = view.layout_to_text(x)
+            SetVar(view,'_pos_layout',str(y))
+            SetVar(view,'_pos_a',str(row))
+            SetVar(view,'_pos_b',str(col))
 
     def on_close(self, view):
         if isView(view.id()) and view.get_status('_ISGBKFILE')=='GBK':
@@ -112,3 +134,13 @@ class PluginEventListener(sublime_plugin.EventListener):
                     view.set_scratch(False)
             if view.is_dirty():
                 view.erase_status(str(view.file_name()) + '_GBK_STATUS')
+
+            a = GetVar(view,'_pos_a')
+            b = GetVar(view,'_pos_b')
+            if (a!='' and b!='' and a!='0' and b!='0'):
+                pt = view.text_point(int(a),int(b))
+                view.sel().clear()
+                view.sel().add(sublime.Region(pt))
+                view.show(pt)
+                y = GetVar(view,'_pos_layout')
+                view.set_viewport_position(view.text_to_layout(int(y)))

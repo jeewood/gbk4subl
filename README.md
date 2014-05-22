@@ -3,4 +3,5 @@ gbk4subl
 
 GBK encodeing support for sublime text 3 and it's dev tested!
 
+jsenter add cursor restore
 
