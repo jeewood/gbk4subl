@@ -142,5 +142,4 @@ class PluginEventListener(sublime_plugin.EventListener):
                 view.sel().clear()
                 view.sel().add(sublime.Region(pt))
                 view.show(pt)
-                y = GetVar(view,'_pos_layout')
-                view.set_viewport_position(view.text_to_layout(int(y)))
+                view.set_viewport_position(view.text_to_layout(int(GetVar(view,'_pos_layout'))))
