@@ -31,6 +31,19 @@ def DelVar(var):
     if(isView(view.id())):
         view.erase_status(var)
 
+def VarExists(var):
+    view = GetView()
+    if (isView(view.id())):
+        print(var)
+        try:
+            GetVar(var)
+            print('True!')
+            return True
+        except Exception as e:
+            print('False!')
+            return False
+        return True
+
 def file_encoding(view):
     try:
         os.path.exists(view.file_name())
@@ -90,6 +103,21 @@ class SaveUtf8Command(sublime_plugin.TextCommand):
             #DelVar('_ISGBKFILE')
             DelVar('__GBK_S')
             view.run_command('save',{"encoding": "utf-8"})
+            
+def restore_position_cb():
+    view = GetView()
+    lptx = float(GetVar('_pos_layout_x'))
+    lpty = float(GetVar('_pos_layout_y'))
+    posa =  int(GetVar('_pos_x'))
+    posb =  int(GetVar('_pos_y'))
+    print('point:',lptx,lpty)
+    view.set_viewport_position((lptx,lpty))
+    view.sel().clear()
+    view.sel().add(sublime.Region(posa,posb))
+    DelVar('_pos_layout_x')
+    DelVar('_pos_layout_y')
+    DelVar('_pos_x')
+    DelVar('_pos_y')
 
 class PluginEventListener(sublime_plugin.EventListener):
     def on_load(self, view):
@@ -99,16 +127,19 @@ class PluginEventListener(sublime_plugin.EventListener):
     def on_post_save(self, view):
         if isView(view.id()) and GetVar('_ISGBKFILE')=='GBK':
             view.run_command('from_utf8')
+            print("Saved! ")
 
     def on_pre_save(self, view):
         if isView(view.id()):
             file_encoding(view)
             pos = view.sel()[0]
-            row,col = view.rowcol(pos.b)
-            print("save: ",row,"-",col,view.text_point(row,col))
-            SetVar('_pos_row',str(row+1))
-            SetVar('_pos_col',str(col+1))
-            SetVar('_pos_layout',str(view.layout_to_text(view.viewport_position())))
+            lpt = view.viewport_position()
+            print('Beginning ... ')
+            print("viewport_position:",lpt,'point:',view.layout_to_text(lpt))
+            SetVar('_pos_x',str(pos.a))
+            SetVar('_pos_y',str(pos.b))
+            SetVar('_pos_layout_x',str(lpt[0]))
+            SetVar('_pos_layout_y',str(lpt[1]))
 
     def on_close(self, view):
         if isView(view.id()) and GetVar('_ISGBKFILE')=='GBK':
@@ -124,6 +155,7 @@ class PluginEventListener(sublime_plugin.EventListener):
             and file_encoding(view)=='GBK':
             view.run_command('to_utf8')
     
+
     def on_modified(self, view):
         if isView(view.id()):
             if view.file_name() and os.path.exists(view.file_name()):
@@ -134,16 +166,7 @@ class PluginEventListener(sublime_plugin.EventListener):
                 elif GetVar('__GBK_S')=='<A>':
                     DelVar('__GBK_S')
                     view.set_scratch(True)
-                    a = GetVar('_pos_row')
-                    b = GetVar('_pos_col')
-                    if (a!='' and b!=''):
-                        pt = view.text_point(int(a)-1,int(b)-1)
-                        view.sel().clear()
-                        view.sel().add(pt)
-                        view.set_viewport_position(view.text_to_layout(int(GetVar('_pos_layout'))))
-                    DelVar('_pos_row')
-                    DelVar('_pos_col')
-                    DelVar('_pos_layout')
+                    sublime.set_timeout(restore_position_cb,20)
                 else:
                     view.set_scratch(False)
             if view.is_dirty():
