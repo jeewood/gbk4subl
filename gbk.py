@@ -36,22 +36,15 @@ def restore_position_cb():
     lptx = float(GetVar('_pos_layout_x'))
     lpty = float(GetVar('_pos_layout_y'))
     #print('point:',lptx,lpty)
-    view.set_viewport_position((lptx,lpty))
-    sublime.active_window().focus_view(view)
-    DelVar('_pos_layout_x')
-    DelVar('_pos_layout_y')
-
-def restore_cursor_cb():
-    view = GetView()
     posa =  int(GetVar('_pos_x'))
     posb =  int(GetVar('_pos_y'))
     pos = sublime.Region(posa,posb)
-    #print('r Sel:',pos)
-    view.sel().clear()
     view.sel().add(pos)
-    DelVar('_pos_x')
-    DelVar('_pos_y')
-    sublime.set_timeout(restore_position_cb,5)
+    view.sel().subtract(view.sel()[0])
+    view.set_viewport_position((lptx+1,lpty))
+    view.set_viewport_position((lptx,lpty))
+    DelVar('_pos_layout_x')
+    DelVar('_pos_layout_y')
 
 def file_encoding(view):
     try:
@@ -127,7 +120,7 @@ class PluginEventListener(sublime_plugin.EventListener):
             file_encoding(view)
             pos = view.sel()[0]
             lpt = view.viewport_position()
-            #print('vp:',lpt,'Sel.a:',pos.a,'Sel.b:',pos.b)
+            print('vp:',lpt,'Sel:',pos)
             SetVar('_pos_x',str(pos.a))
             SetVar('_pos_y',str(pos.b))
             SetVar('_pos_layout_x',str(lpt[0]))
@@ -158,7 +151,7 @@ class PluginEventListener(sublime_plugin.EventListener):
                 elif GetVar('__GBK_S')=='<A>':
                     DelVar('__GBK_S')
                     view.set_scratch(True)
-                    sublime.set_timeout(restore_cursor_cb,5)
+                    sublime.set_timeout(restore_position_cb,50)
                 else:
                     view.set_scratch(False)
             if view.is_dirty():
