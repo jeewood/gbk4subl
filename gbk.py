@@ -30,36 +30,28 @@ def DelVar(var):
     view = GetView()
     if(isView(view.id())):
         view.erase_status(var)
-
-def VarExists(var):
-    view = GetView()
-    if (isView(view.id())):
-        print(var)
-        try:
-            GetVar(var)
-            print('True!')
-            return True
-        except Exception as e:
-            print('False!')
-            return False
-        return True
             
 def restore_position_cb():
     view = GetView()
     lptx = float(GetVar('_pos_layout_x'))
     lpty = float(GetVar('_pos_layout_y'))
-    posa =  int(GetVar('_pos_x'))
-    posb =  int(GetVar('_pos_y'))
-    print('point:',lptx,lpty)
-    print('r Sel.a:',posa)
-    print('r Sel.b:',posb)
+    #print('point:',lptx,lpty)
     view.set_viewport_position((lptx,lpty))
-    view.sel().clear()
-    view.sel().add(sublime.Region(posa,posb))
+    sublime.active_window().focus_view(view)
     DelVar('_pos_layout_x')
     DelVar('_pos_layout_y')
+
+def restore_cursor_cb():
+    view = GetView()
+    posa =  int(GetVar('_pos_x'))
+    posb =  int(GetVar('_pos_y'))
+    pos = sublime.Region(posa,posb)
+    #print('r Sel:',pos)
+    view.sel().clear()
+    view.sel().add(pos)
     DelVar('_pos_x')
     DelVar('_pos_y')
+    sublime.set_timeout(restore_position_cb,5)
 
 def file_encoding(view):
     try:
@@ -129,15 +121,13 @@ class PluginEventListener(sublime_plugin.EventListener):
     def on_post_save(self, view):
         if isView(view.id()) and GetVar('_ISGBKFILE')=='GBK':
             view.run_command('from_utf8')
-            print("Saved! ")
 
     def on_pre_save(self, view):
         if isView(view.id()):
             file_encoding(view)
             pos = view.sel()[0]
             lpt = view.viewport_position()
-            print('Sel.a:',pos.a)
-            print('Sel.b:',pos.b)
+            #print('vp:',lpt,'Sel.a:',pos.a,'Sel.b:',pos.b)
             SetVar('_pos_x',str(pos.a))
             SetVar('_pos_y',str(pos.b))
             SetVar('_pos_layout_x',str(lpt[0]))
@@ -168,7 +158,7 @@ class PluginEventListener(sublime_plugin.EventListener):
                 elif GetVar('__GBK_S')=='<A>':
                     DelVar('__GBK_S')
                     view.set_scratch(True)
-                    sublime.set_timeout(restore_position_cb,5)
+                    sublime.set_timeout(restore_cursor_cb,5)
                 else:
                     view.set_scratch(False)
             if view.is_dirty():
