@@ -43,6 +43,23 @@ def VarExists(var):
             print('False!')
             return False
         return True
+            
+def restore_position_cb():
+    view = GetView()
+    lptx = float(GetVar('_pos_layout_x'))
+    lpty = float(GetVar('_pos_layout_y'))
+    posa =  int(GetVar('_pos_x'))
+    posb =  int(GetVar('_pos_y'))
+    print('point:',lptx,lpty)
+    print('r Sel.a:',posa)
+    print('r Sel.b:',posb)
+    view.set_viewport_position((lptx,lpty))
+    view.sel().clear()
+    view.sel().add(sublime.Region(posa,posb))
+    DelVar('_pos_layout_x')
+    DelVar('_pos_layout_y')
+    DelVar('_pos_x')
+    DelVar('_pos_y')
 
 def file_encoding(view):
     try:
@@ -103,21 +120,6 @@ class SaveUtf8Command(sublime_plugin.TextCommand):
             #DelVar('_ISGBKFILE')
             DelVar('__GBK_S')
             view.run_command('save',{"encoding": "utf-8"})
-            
-def restore_position_cb():
-    view = GetView()
-    lptx = float(GetVar('_pos_layout_x'))
-    lpty = float(GetVar('_pos_layout_y'))
-    posa =  int(GetVar('_pos_x'))
-    posb =  int(GetVar('_pos_y'))
-    print('point:',lptx,lpty)
-    view.set_viewport_position((lptx,lpty))
-    view.sel().clear()
-    view.sel().add(sublime.Region(posa,posb))
-    DelVar('_pos_layout_x')
-    DelVar('_pos_layout_y')
-    DelVar('_pos_x')
-    DelVar('_pos_y')
 
 class PluginEventListener(sublime_plugin.EventListener):
     def on_load(self, view):
@@ -134,8 +136,8 @@ class PluginEventListener(sublime_plugin.EventListener):
             file_encoding(view)
             pos = view.sel()[0]
             lpt = view.viewport_position()
-            print('Beginning ... ')
-            print("viewport_position:",lpt,'point:',view.layout_to_text(lpt))
+            print('Sel.a:',pos.a)
+            print('Sel.b:',pos.b)
             SetVar('_pos_x',str(pos.a))
             SetVar('_pos_y',str(pos.b))
             SetVar('_pos_layout_x',str(lpt[0]))
@@ -166,7 +168,7 @@ class PluginEventListener(sublime_plugin.EventListener):
                 elif GetVar('__GBK_S')=='<A>':
                     DelVar('__GBK_S')
                     view.set_scratch(True)
-                    sublime.set_timeout(restore_position_cb,20)
+                    sublime.set_timeout(restore_position_cb,5)
                 else:
                     view.set_scratch(False)
             if view.is_dirty():
