@@ -2,7 +2,6 @@ import sublime, sublime_plugin
 import os
 
 cnt = 3
-gbuf = ''
 
 def log(msg):
     print(msg)
@@ -115,7 +114,6 @@ class ToUtf8Command(sublime_plugin.TextCommand):
             view.set_viewport_position(vp,False)
             if sets.has('rs'):
                 rs = sets.get('rs')
-                print('rs: ',rs)
                 sel = view.sel()
                 sel.clear()
                 for x in rs:
@@ -155,7 +153,7 @@ class PluginEventListener(sublime_plugin.EventListener):
 
     def on_modified(self,view):
         global cnt
-        if cnt==1 or cnt==5:
+        if cnt==1 or cnt==3:
             view.set_scratch(False)
         if cnt<5:
             cnt=cnt+1
