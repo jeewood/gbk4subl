@@ -7,11 +7,37 @@ def SetStatusBar(view, var, value):
 def GetStatusBar(view, var):
     return view.get_status(var)
 
+def UTF8_nBOM(buf):
+    bAllAscii=True
+    nBytes = 0
+    for ch in buf:
+        if ch & 0x80 != 0: bAllAscii=False
+        if nBytes==0:
+            if ch>=0x80:
+                if ch >=0xFC and ch <= 0xFD:
+                    nBytes=6
+                elif ch >= 0xF8:
+                    nBytes=5
+                elif ch >= 0xF0:
+                    nBytes=4
+                elif ch >= 0xE0:
+                    nBytes=3
+                elif ch >= 0xC0:
+                    nBytes=2
+                else:
+                    return False
+                nBytes-=1
+        else:
+            if (ch & 0xC0) != 0x80: return False
+            nBytes-=1
+    if nBytes > 0 or bAllAscii: return False
+    return True
+
 def Detect(view):
     file_name = view.file_name()
     if not file_name or not os.path.exists(file_name): return
-    if (GetStatusBar(view,'_ISGBKFILE')=='GBK'):
-        return 'GBK'
+    ad = GetStatusBar(view,'_ISGBKFILE') 
+    if (ad!=''): return ad
     size=os.path.getsize(file_name)
     fp = open(file_name,'rb')
     buf=line=b''
@@ -20,12 +46,21 @@ def Detect(view):
         line = fp.readline()
         if not line:break
         for ch in line:
-            if ch>=128:
+            if ch>=0x80:
                 isCh=True
                 break
-        buf=line
+        if isCh: buf=line
     fp.close()
-
+    ln = len(buf)
+    if (ln>2 and buf[0]==0xef and buf[1]==0xbb and buf[2]==0xbf) or \
+        (ln>1 and ((buf[0]==0xff and buf[1]==0xfe) or (buf[0]==0xfe and buf[1]==0xff))) or \
+        ln==0 or UTF8_nBOM(buf):
+        SetStatusBar(view,'_ISGBKFILE','UTF-8')
+        return 'UTF-8'
+    else:
+        SetStatusBar(view,'_ISGBKFILE','GBK')
+        return 'GBK'
+    '''
     try:
         buf.decode('utf8')
         return 'UTF-8'
@@ -34,6 +69,7 @@ def Detect(view):
         SetStatusBar(view, '_ISGBKFILE','GBK')
         view.set_encoding('UTF-8')
         return 'GBK'
+    '''
 
 class FromUtf8Command(sublime_plugin.TextCommand):
     def run(self, edit):
