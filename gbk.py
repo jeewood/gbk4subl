@@ -42,11 +42,14 @@ class FromUtf8Command(sublime_plugin.TextCommand):
         reg_all = sublime.Region(0, view.size())
         text = view.substr(reg_all)
         text = text.replace('\n','\r\n')
-        text = text.encode('gbk')
-        if view.file_name() and os.path.exists(view.file_name()):
-            fp = open(view.file_name(),'wb')
-            fp.write(text)
-            fp.close()
+        try:
+            text = text.encode('gbk')
+            if view.file_name() and os.path.exists(view.file_name()):
+                fp = open(view.file_name(),'wb')
+                fp.write(text)
+                fp.close()
+        except UnicodeDecodeError as e:
+            pass
         view.set_read_only(False)
 
 class ToUtf8Command(sublime_plugin.TextCommand):
@@ -54,28 +57,31 @@ class ToUtf8Command(sublime_plugin.TextCommand):
         view = self.view
         if view.file_name() and os.path.exists(view.file_name()):
             view.set_scratch(True)
-            fp = open(view.file_name(),'rb')
-            buf = fp.read()
-            fp.close()
-            text = buf.decode('gbk')
-            text = text.replace('\r\n','\n').replace('\r','\n')
-            reg_all = sublime.Region(0, view.size())
-            sel = view.sel()
-            rs = [(x.a, x.b) for x in sel]
-            vp = view.viewport_position()
-            view.set_viewport_position((0,0),False)
-            view.replace(edit,reg_all,text)
-            view.set_encoding('UTF-8')
-            view.set_viewport_position(vp,False)
-            sel.clear()
-            for x in rs:
-                sel.add(sublime.Region(x[0],x[1]))
-            #print('ToUtf8Command done view.id: ',view.id(), ' args:',args)
+            try:
+                fp = open(view.file_name(),'rb')
+                buf = fp.read()
+                fp.close()
+                text = buf.decode('gbk')
+                text = text.replace('\r\n','\n').replace('\r','\n')
+                reg_all = sublime.Region(0, view.size())
+                sel = view.sel()
+                rs = [(x.a, x.b) for x in sel]
+                vp = view.viewport_position()
+                view.set_viewport_position((0,0),False)
+                view.replace(edit,reg_all,text)
+                view.set_encoding('UTF-8')
+                view.set_viewport_position(vp,False)
+                sel.clear()
+                for x in rs:
+                    sel.add(sublime.Region(x[0],x[1]))
+            except UnicodeDecodeError as e:
+                pass
+            print('ToUtf8Command done view.id: ',view.id(), ' args:',args)
 
 class PluginEventListener(sublime_plugin.EventListener):
     def on_load_async(self, view):
         if Detect(view)=='GBK':
-            pass
+            view.run_command('to_utf8',{'args':'on load async'})
 
     def on_post_save_async(self, view):
         if  Detect(view)=='GBK':
@@ -90,7 +96,7 @@ class PluginEventListener(sublime_plugin.EventListener):
             cmd1 = view.command_history(-1,True)
             cmd0 = view.command_history(0,True)
             if cmd0[0]!='to_utf8' and not view.is_dirty():
-                view.run_command('to_utf8',{'args':'on_activated_async'})
+                view.run_command('to_utf8',{'args':'on activated async'})
             
     def on_modified_async(self,view):
         if Detect(view)=='GBK':
@@ -99,5 +105,5 @@ class PluginEventListener(sublime_plugin.EventListener):
             if cmd0[0]!='to_utf8' and cmd0[0]!='revert':
                 view.set_scratch(False)
             if cmd0[0]=='revert':
-                view.run_command('to_utf8',{'args':'on_modified_async'})
+                view.run_command('to_utf8',{'args':'on modified async'})
 
